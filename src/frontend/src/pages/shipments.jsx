@@ -1,7 +1,8 @@
 import React from 'react';
 import { useEffect } from 'react';
+import Shipment from '../components/shipment';
 
-function Shipments() {
+function ShipmentsPage() {
 
     useEffect(() => {
 
@@ -14,4 +15,4 @@ function Shipments() {
     );
 }
 
-export default Shipments;
+export default ShipmentsPage;

@@ -1,7 +1,8 @@
 import React from 'react';
 import { useEffect } from 'react';
+import ProductDetail from '../components/productDetail';
 
-function ShipmentProductInfo() {
+function ProductDetailsPage() {
 
     useEffect(() => {
 
@@ -14,4 +15,4 @@ function ShipmentProductInfo() {
     );
 }
 
-export default ShipmentProductInfo;
+export default ProductDetailsPage;

@@ -1,7 +1,8 @@
 import React from 'react';
 import { useEffect } from 'react';
+import Ship from '../components/ship';
 
-function Ships() {
+function ShipsPage() {
 
     useEffect(() => {
 
@@ -14,4 +15,4 @@ function Ships() {
     );
 }
 
-export default Ships;
+export default ShipsPage;

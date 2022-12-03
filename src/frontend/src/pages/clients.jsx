@@ -1,7 +1,8 @@
 import React from 'react';
 import { useEffect } from 'react';
+import Client from '../components/client';
 
-function Clients() {
+function ClientsPage() {
 
     useEffect(() => {
         
@@ -14,4 +15,4 @@ function Clients() {
     );
 }
 
-export default Clients;
+export default ClientsPage;

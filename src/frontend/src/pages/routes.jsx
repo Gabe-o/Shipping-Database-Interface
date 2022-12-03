@@ -1,5 +1,6 @@
 import React from 'react';
 import { useEffect } from 'react';
+import Route from '../components/route';
 
 function RoutesPage() {
 

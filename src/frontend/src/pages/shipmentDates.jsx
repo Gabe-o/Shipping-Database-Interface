@@ -1,7 +1,8 @@
 import React from 'react';
 import { useEffect } from 'react';
+import ShipmentDate from '../components/shipmentDate';
 
-function ShipmentDates() {
+function ShipmentDatesPage() {
 
     useEffect(() => {
 
@@ -14,4 +15,4 @@ function ShipmentDates() {
     );
 }
 
-export default ShipmentDates;
+export default ShipmentDatesPage;

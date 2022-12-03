@@ -1,7 +1,8 @@
 import React from 'react';
 import { useEffect } from 'react';
+import Port from '../components/port';
 
-function Ports() {
+function PortsPage() {
 
     useEffect(() => {
 
@@ -15,4 +16,4 @@ function Ports() {
     );
 }
 
-export default Ports;
+export default PortsPage;

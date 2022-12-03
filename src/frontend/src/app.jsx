@@ -2,14 +2,14 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import HomePage from "./pages/homePage";
 import Navbar from "./components/navbar";
-import Clients from "./pages/clients";
-import Products from "./pages/products";
-import Shipments from "./pages/shipments";
-import ShipmentProductInfo from "./pages/shipmentProductionInformation";
-import ShipmentDates from "./pages/shipmentDates";
-import Ports from "./pages/ports";
-import RoutesPage from "./pages/routes";
-import Ships from "./pages/ships";
+import ClientsPage from "./pages/clients";
+import ProductsPage from "./pages/products";
+import ShipmentsPage from "./pages/shipments";
+import ProductDetailsPage from "./pages/productDetails";
+import ShipmentDatesPage from "./pages/shipmentDates";
+import PortsPage from "./pages/ports";
+import RoutesPagePage from "./pages/routes";
+import ShipsPage from "./pages/ships";
 import './styles/app.css';
 
 function App() {
@@ -20,14 +20,14 @@ function App() {
                 <Routes>
                     <Route path="" element={<HomePage />}/>
                     <Route path="/home" element={<HomePage/>}/>
-                    <Route path="/clients" element={<Clients/>}/>
-                    <Route path="/products" element={<Products/>}/>
-                    <Route path="/shipments" element={<Shipments/>}/>
-                    <Route path="/shipmentProductInformation" element={<ShipmentProductInfo/>}/>
-                    <Route path="/shipmentDates" element={<ShipmentDates/>}/>
-                    <Route path="/routes" element={<RoutesPage/>}/>
-                    <Route path="/ports" element={<Ports/>}/>
-                    <Route path="/ships" element={<Ships/>}/>
+                    <Route path="/clients" element={<ClientsPage/>}/>
+                    <Route path="/products" element={<ProductsPage/>}/>
+                    <Route path="/shipments" element={<ShipmentsPage/>}/>
+                    <Route path="/shipmentProductInformation" element={<ProductDetailsPage/>}/>
+                    <Route path="/shipmentDates" element={<ShipmentDatesPage/>}/>
+                    <Route path="/routes" element={<RoutesPagePage/>}/>
+                    <Route path="/ports" element={<PortsPage/>}/>
+                    <Route path="/ships" element={<ShipsPage/>}/>
                 </Routes>
             </div>
         </BrowserRouter>

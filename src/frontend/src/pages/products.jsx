@@ -1,7 +1,8 @@
 import React from 'react';
 import { useEffect } from 'react';
+import Product from '../components/product';
 
-function Products() {
+function ProductsPage() {
 
     useEffect(() => {
 
@@ -14,4 +15,4 @@ function Products() {
     );
 }
 
-export default Products;
+export default ProductsPage;
