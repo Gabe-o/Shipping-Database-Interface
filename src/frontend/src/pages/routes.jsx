@@ -5,13 +5,28 @@ import Route from '../components/route';
 function RoutesPage() {
 
     const [inputs, setInputs] = useState({});
+    const [results, setResults] = useState([]);
 
     useEffect(() => {
-
+        fetch("http://" + window.location.hostname +":9000/api/routes", {method: "GET", headers: new Headers({ 'Content-Type': 'application/json' })})
+        .then(res => res.json())
+        .then(data => {
+            setResults(data);
+        })
+        .catch(err => {
+            console.log(err);
+        })
     }, []);
 
     const handleSubmit = () => {
-
+        fetch("http://" + window.location.hostname + ":9000/api/routes/primaryKey?routeNo=" + inputs.routeNo, {method: "GET", headers: new Headers({ 'Content-Type': 'application/json' })})
+        .then(res => res.json())
+        .then(data => {
+            setResults(data);
+        })
+        .catch(err => {
+            console.log(err);
+        })
     }
 
     const handleChange = (event) => {

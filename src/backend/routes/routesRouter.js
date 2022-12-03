@@ -9,10 +9,10 @@ routesRouter.get("", (req, res) => {
             res.status(500).json("Error getting routes data!")
         }
         else if(data.length === 0){
-            res.json("Table routes has no data!");
+            res.status(404).json("Table routes has no data!");
         }
         else{
-            res.json(data);
+            res.status(200).json(data);
         }
     });
 });
@@ -50,6 +50,20 @@ routesRouter.delete("", (req, res) => {
             res.status(200).json("Succesfully deleted row with routeNo: " + req.body.routeNo + " in routes!");
         }
     })
+});
+
+routesRouter.get("/primaryKey", (req, res) => {
+    db.query("SELECT * FROM routes WHERE routeNo=?;", [req.params.routeNo], (err, data) => {
+        if(err != null){
+            res.status(500).json("Error getting routes data where route number is " + req.params.routeNo + "!");
+        }
+        else if(data.length === 0){
+            res.status(404).json("No routes data found for route number is " + req.params.routeNo + "!")
+        }
+        else{
+            res.status(200).json(data);
+        }
+    });
 });
 
 module.exports = routesRouter;

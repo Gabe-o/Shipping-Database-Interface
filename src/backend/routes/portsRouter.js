@@ -9,10 +9,10 @@ portsRouter.get("", (req, res) => {
             res.status(500).json("Error getting ports data!")
         }
         else if(data.length === 0){
-            res.json("Table ports has no data!");
+            res.status(404).json("Table ports has no data!");
         }
         else{
-            res.json(data);
+            res.status(200).json(data);
         }
     });
 });
@@ -48,6 +48,20 @@ portsRouter.delete("", (req, res) => {
         }
         else{
             res.status(200).json("Succesfully deleted row with portNo: " + req.body.portNo + " in ports!");
+        }
+    });
+});
+
+portsRouter.get("/primaryKey", (req, res) => {
+    db.query("SELECT * FROM ports WHERE portNo=?;", [req.params.portNo], (err, data) => {
+        if(err != null){
+            res.status(500).json("Error getting ports data where port number is " + req.params.portNo + "!");
+        }
+        else if(data.length === 0){
+            res.status(404).json("No ports data found for port number " + req.params.portNo + "!")
+        }
+        else{
+            res.status(200).json(data);
         }
     });
 });

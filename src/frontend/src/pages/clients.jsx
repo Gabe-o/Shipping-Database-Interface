@@ -5,13 +5,28 @@ import Client from '../components/client';
 function ClientsPage() {
 
     const [inputs, setInputs] = useState({});
+    const [results, setResults] = useState([]);
 
     useEffect(() => {
-
+        fetch("http://" + window.location.hostname + ":9000/api/clients", {method: "GET", headers: new Headers({ 'Content-Type': 'application/json' })})
+        .then(res => res.json())
+        .then(data => {
+            setResults(data);
+        })
+        .catch(err => {
+            console.log(err);
+        })
     }, []);
 
     const handleSubmit = () => {
-
+        fetch("http://" + window.location.hostname + ":9000/api/clients/primaryKey?email=" + inputs.email, {method: "GET", headers: new Headers({ 'Content-Type': 'application/json' })})
+        .then(res => res.json())
+        .then(data => {
+            setResults(data);
+        })
+        .catch(err => {
+            console.log(err);
+        })
     }
 
     const handleChange = (event) => {

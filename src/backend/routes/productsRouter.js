@@ -9,10 +9,10 @@ productsRouter.get("", (req, res) => {
             res.status(500).json("Error getting products data!")
         }
         else if(data.length === 0){
-            res.json("Table products has no data!");
+            res.status(404).json("Table products has no data!");
         }
         else{
-            res.json(data);
+            res.status(200).json(data);
         }
     });
 });
@@ -50,6 +50,20 @@ productsRouter.delete("", (req, res) => {
             res.status(200).json("Succesfully deleted row with productID: " + req.body.productID + " in products!");
         }
     })
+});
+
+productsRouter.get("/primaryKey", (req, res) => {
+    db.query("SELECT * FROM products WHERE productID=?;", [req.params.productID], (err, data) => {
+        if(err != null){
+            res.status(500).json("Error getting products data where product id is " + req.params.productID + "!");
+        }
+        else if(data.length === 0){
+            res.status(404).json("No products data found for product id" + req.params.productID + "!")
+        }
+        else{
+            res.status(200).json(data);
+        }
+    });
 });
 
 module.exports = productsRouter;

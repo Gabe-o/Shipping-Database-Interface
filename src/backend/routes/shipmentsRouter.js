@@ -9,10 +9,10 @@ shipmentsRouter.get("", (req, res) => {
             res.status(500).json("Error getting shipments data!")
         }
         else if(data.length === 0){
-            res.json("Table shipments has no data!");
+            res.status(404).json("Table shipments has no data!");
         }
         else{
-            res.json(data);
+            res.status(200).json(data);
         }
     });
 });
@@ -50,6 +50,20 @@ shipmentsRouter.delete("", (req, res) => {
             res.status(200).json("Succesfully deleted row with " + req.body.shipmentID + " in shipments!");
         }
     })
+});
+
+shipmentsRouter.get("/primaryKey", (req, res) => {
+    db.query("SELECT * FROM shipments WHERE shipmentID=?;", [req.params.shipmentID], (err, data) => {
+        if(err != null){
+            res.status(500).json("Error getting shipments data where shipment id is " + req.params.shipmentID + "!");
+        }
+        else if(data.length === 0){
+            res.status(404).json("No shipments data found for shipment id " + req.params.shipmentID + "!")
+        }
+        else{
+            res.status(200).json(data);
+        }
+    });
 });
 
 module.exports = shipmentsRouter;

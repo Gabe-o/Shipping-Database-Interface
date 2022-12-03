@@ -5,13 +5,28 @@ import Port from '../components/port';
 function PortsPage() {
 
     const [inputs, setInputs] = useState({});
+    const [results, setResults] = useState([]);
 
     useEffect(() => {
-
+        fetch("http://" + window.location.hostname +":9000/api/ports", {method: "GET", headers: new Headers({ 'Content-Type': 'application/json' })})
+        .then(res => res.json())
+        .then(data => {
+            setResults(data);
+        })
+        .catch(err => {
+            console.log(err);
+        })
     }, []);
 
     const handleSubmit = () => {
-
+        fetch("http://" + window.location.hostname + ":9000/api/ports/primaryKey?portNo=" + inputs.portNo, {method: "GET", headers: new Headers({ 'Content-Type': 'application/json' })})
+        .then(res => res.json())
+        .then(data => {
+            setResults(data);
+        })
+        .catch(err => {
+            console.log(err);
+        })
     }
 
     const handleChange = (event) => {

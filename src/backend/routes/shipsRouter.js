@@ -9,10 +9,10 @@ shipsRouter.get("", (req, res) => {
             res.status(500).json("Error getting ships data!")
         }
         else if(data.length === 0){
-            res.json("Table ships has no data!");
+            res.status(404).json("Table ships has no data!");
         }
         else{
-            res.json(data);
+            res.status(200).json(data);
         }
     });
 });
@@ -50,6 +50,20 @@ shipsRouter.delete("", (req, res) => {
             res.status(200).json("Succesfully deleted row with " + req.body.shipID + " in ships!");
         }
     })
+});
+
+shipsRouter.get("/primaryKey", (req, res) => {
+    db.query("SELECT * FROM ships WHERE shipID=?;", [req.params.shipID], (err, data) => {
+        if(err != null){
+            res.status(500).json("Error getting ships data where ship id is " + req.params.shipID + "!");
+        }
+        else if(data.length === 0){
+            res.status(404).json("No ships data found for ship id " + req.params.shipID + "!")
+        }
+        else{
+            res.status(200).json(data);
+        }
+    });
 });
 
 module.exports = shipsRouter;

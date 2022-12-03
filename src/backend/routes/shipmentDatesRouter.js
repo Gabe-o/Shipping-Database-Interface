@@ -9,10 +9,10 @@ shipmentDatesRouter.get("", (req, res) => {
             res.status(500).json("Error getting shipmentDates data!")
         }
         else if(data.length === 0){
-            res.json("Table shipmentDates has no data!");
+            res.status(404).json("Table shipmentDates has no data!");
         }
         else{
-            res.json(data);
+            res.status(200).json(data);
         }
     });
 });
@@ -52,4 +52,17 @@ shipmentDatesRouter.delete("", (req, res) => {
     })
 });
 
+shipmentDatesRouter.get("/primaryKey", (req, res) => {
+    db.query("SELECT * FROM routes WHERE routeNo=? AND departureDate=? AND shipID=?;", [req.params.routeNe, req.params.departureDate, req.params.shipID], (err, data) => {
+        if(err != null){
+            res.status(500).json("Error getting shipmentDates data where route number is " + req.params.routeNo + " and departure date is " + req.params.departureDate + " and ship id is " + req.params.shipID + "!");
+        }
+        else if(data.length === 0){
+            res.status(404).json("No shipmentDates data found for route number " + req.params.routeNo + " and departure date " + req.params.departureDate + " and ship id " + req.params.shipID + "!")
+        }
+        else{
+            res.status(200).json(data);
+        }
+    });
+});
 module.exports = shipmentDatesRouter;

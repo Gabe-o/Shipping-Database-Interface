@@ -9,10 +9,10 @@ productDetailsRouter.get("", (req, res) => {
             res.status(500).json("Error getting productDetails data!")
         }
         else if(data.length === 0){
-            res.json("Table productDetails has no data!");
+            res.status(404).json("Table productDetails has no data!");
         }
         else{
-            res.json(data);
+            res.status(200).json(data);
         }
     });
 });
@@ -48,6 +48,20 @@ productDetailsRouter.delete("", (req, res) => {
         }
         else{
             res.status(200).json("Succesfully deleted row with shipmentNo: " + req.body.shipmentNo + " and productID: " + req.body.productID + " in productDetails!");
+        }
+    });
+});
+
+productDetailsRouter.get("/primaryKey", (req, res) => {
+    db.query("SELECT * FROM productDetails WHERE shipmentNo=? AND productID=?;", [req.params.shipmentNo, req.params.productID], (err, data) => {
+        if(err != null){
+            res.status(500).json("Error getting productDetails data where shipment number is " + req.params.shipmentNo + " and product id is " + req.params.productID + "!");
+        }
+        else if(data.length === 0){
+            res.status(404).json("No productDetails data found for shipment number " + req.params.shipmentNo + " and product id" + req.params.productID + "!")
+        }
+        else{
+            res.status(200).json(data);
         }
     });
 });

@@ -5,13 +5,28 @@ import ShipmentDate from '../components/shipmentDate';
 function ShipmentDatesPage() {
 
     const [inputs, setInputs] = useState({});
+    const [results, setResults] = useState([]);
 
     useEffect(() => {
-
+        fetch("http://" + window.location.hostname +":9000/api/shipmentDates", {method: "GET", headers: new Headers({ 'Content-Type': 'application/json' })})
+        .then(res => res.json())
+        .then(data => {
+            setResults(data);
+        })
+        .catch(err => {
+            console.log(err);
+        })
     }, []);
 
     const handleSubmit = () => {
-
+        fetch("http://" + window.location.hostname + ":9000/api/shipmentDates/primaryKey?routeNo=" + inputs.routeNo + "&departureDate=" + inputs.departureDate + "&shipID=" + inputs.shipID, {method: "GET", headers: new Headers({ 'Content-Type': 'application/json' })})
+        .then(res => res.json())
+        .then(data => {
+            setResults(data);
+        })
+        .catch(err => {
+            console.log(err);
+        })
     }
 
     const handleChange = (event) => {

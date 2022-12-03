@@ -10,10 +10,10 @@ clientsRouter.get("", (req, res) => {
             res.status(500).json("Error getting clients data!")
         }
         else if(data.length === 0){
-            res.json("Table clients has no data!");
+            res.status(404).json("Table clients has no data!");
         }
         else{
-            res.json(data);
+            res.status(200).json(data);
         }
     });
 
@@ -52,6 +52,20 @@ clientsRouter.delete("", (req, res) => {
             res.status(200).json("Succesfully deleted row with email: " + req.body.email + " in clients!");
         }
     })
+});
+
+clientsRouter.get("/primaryKey", (req, res) => {
+    db.query("SELECT * FROM clients WHERE email=?;", [req.params.email], (err, data) => {
+        if(err != null){
+            res.status(500).json("Error getting clients data where email is " + req.params.email + "!");
+        }
+        else if(data.length === 0){
+            res.status(404).json("No clients data found for email " + req.params.email + "!")
+        }
+        else{
+            res.status(200).json(data);
+        }
+    });
 });
 
 module.exports = clientsRouter;

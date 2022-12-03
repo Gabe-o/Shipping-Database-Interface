@@ -5,13 +5,28 @@ import Shipment from '../components/shipment';
 function ShipmentsPage() {
 
     const [inputs, setInputs] = useState({});
+    const [results, setResults] = useState([]);
 
     useEffect(() => {
-
+        fetch("http://" + window.location.hostname +":9000/api/shipments", {method: "GET", headers: new Headers({ 'Content-Type': 'application/json' })})
+        .then(res => res.json())
+        .then(data => {
+            setResults(data);
+        })
+        .catch(err => {
+            console.log(err);
+        })
     }, []);
 
     const handleSubmit = () => {
-
+        fetch("http://" + window.location.hostname + ":9000/api/shipments/primaryKey?shipmentID=" + inputs.shipmentID, {method: "GET", headers: new Headers({ 'Content-Type': 'application/json' })})
+        .then(res => res.json())
+        .then(data => {
+            setResults(data);
+        })
+        .catch(err => {
+            console.log(err);
+        });
     }
 
     const handleChange = (event) => {
@@ -26,7 +41,6 @@ function ShipmentsPage() {
             <form onSubmit={handleSubmit}>
                 <input type="text" name="shipmentID" onChange={handleChange} placeholder="Shipment ID" value={inputs.shipmentID || ""} />
             </form>
-            
         </React.Fragment>
     );
 }
