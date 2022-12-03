@@ -1,6 +1,11 @@
 import React from 'react';
+import { useEffect } from 'react';
 
 function ShipmentDates() {
+
+    useEffect(() => {
+
+    }, []);
 
     return (
         <React.Fragment>

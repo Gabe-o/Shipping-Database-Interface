@@ -1,6 +1,11 @@
 import React from 'react';
+import { useEffect } from 'react';
 
 function Ships() {
+
+    useEffect(() => {
+
+    }, []);
 
     return (
         <React.Fragment>

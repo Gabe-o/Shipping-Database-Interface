@@ -1,6 +1,11 @@
 import React from 'react';
+import { useEffect } from 'react';
 
 function Products() {
+
+    useEffect(() => {
+
+    }, []);
 
     return (
         <React.Fragment>

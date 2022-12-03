@@ -1,5 +1,22 @@
 const db = require("./DBconnect")
 
+db.query("DROP TABLE ports;", (err) => {
+    if(err != null){
+        console.log("Can't drop table ports because it doesn't exist!" );
+    }
+    else{
+        console.log("Dropped table ports!" );
+    }
+});
+
+db.query("CREATE TABLE ports (portNo INT NOT NULL,region VARCHAR(100) NULL,portName VARCHAR(100) NULL,country VARCHAR(100) NULL,latitude DOUBLE NULL,longitude DOUBLE NULL,PRIMARY KEY (portNo));", (err) => {
+    if(err != null){
+        console.log("Error creating ports table!" + err);
+    }
+    else{
+        console.log("Succesfully created ports table!");
+    }
+});
 db.query("DROP TABLE routes;", (err) => {
     if(err != null){
         console.log("Can't drop table routes because it doesn't exist!");
@@ -15,24 +32,6 @@ db.query("CREATE TABLE routes (routeNo INT NOT NULL AUTO_INCREMENT,startingPortN
     }
     else{
         console.log("Succesfully created routes table!");
-    }
-});
-
-db.query("DROP TABLE ports;", (err) => {
-    if(err != null){
-        console.log("Can't drop table ports because it doesn't exist!" );
-    }
-    else{
-        console.log("Dropped table ports!" );
-    }
-});
-
-db.query("CREATE TABLE ports (portNo INT NOT NULL AUTO_INCREMENT,region VARCHAR(100) NULL,portName VARCHAR(100) NULL,country VARCHAR(100) NULL,latitude DOUBLE NULL,longitude DOUBLE NULL,PRIMARY KEY (portNo));", (err) => {
-    if(err != null){
-        console.log("Error creating ports table!" + err);
-    }
-    else{
-        console.log("Succesfully created ports table!");
     }
 });
 
@@ -100,7 +99,7 @@ db.query("DROP TABLE shipments;", (err) => {
     }
 });
 
-db.query("CREATE TABLE shipments (shipmentNo INT NOT NULL AUTO_INCREMENT,routeNo INT NULL,shipmentFee VARCHAR(45) NULL,status VARCHAR(45) NULL,departureDate VARCHAR(45) NULL,shipID INT NULL,amountDue VARCHAR(45) NULL,email VARCHAR(100) NULL,PRIMARY KEY (shipmentNo),FOREIGN KEY (shipID) REFERENCES ships (shipID),FOREIGN KEY (routeNo) REFERENCES routes (routeNo),FOREIGN KEY (email) REFERENCES clients (email));", (err) => {
+db.query("CREATE TABLE shipments (shipmentNo INT NOT NULL AUTO_INCREMENT,routeNo INT NULL,shipmentFee VARCHAR(45) NULL,status VARCHAR(45) NULL,departureDate VARCHAR(45) NULL,shipID INT NULL ,email VARCHAR(100) NULL,PRIMARY KEY (shipmentNo),FOREIGN KEY (shipID) REFERENCES ships (shipID),FOREIGN KEY (routeNo) REFERENCES routes (routeNo),FOREIGN KEY (email) REFERENCES clients (email));", (err) => {
     if(err != null){
         console.log("Error creating shipments table!" + err);
     }
@@ -109,21 +108,21 @@ db.query("CREATE TABLE shipments (shipmentNo INT NOT NULL AUTO_INCREMENT,routeNo
     }
 });
 
-db.query("DROP TABLE shipmentProductInfo;", (err) => {
+db.query("DROP TABLE productDetails;", (err) => {
     if(err != null){
-        console.log("Can't drop table shipmentProductInfo because it doesn't exist!");
+        console.log("Can't drop tableproductDetails because it doesn't exist!");
     }
     else{
-        console.log("Dropped table shipmentProductInfo!");
+        console.log("Dropped table productDetails!");
     }
 });
 
-db.query("CREATE TABLE shipmentProductInfo (shipmentNo INT NOT NULL,productID INT NOT NULL,quantity INT NULL,PRIMARY KEY (shipmentNo, productID),FOREIGN KEY (shipmentNo) REFERENCES shipments (shipmentNo),FOREIGN KEY (productID) REFERENCES products (productID));", (err) => {
+db.query("CREATE TABLE productDetails (shipmentNo INT NOT NULL,productID INT NOT NULL,quantity INT NULL,PRIMARY KEY (shipmentNo, productID),FOREIGN KEY (shipmentNo) REFERENCES shipments (shipmentNo),FOREIGN KEY (productID) REFERENCES products (productID));", (err) => {
     if(err != null){
-        console.log("Error creating shipmentProductInfo table!" + err);
+        console.log("Error creating productDetails table!" + err);
     }
     else{
-        console.log("Succesfully created shipmentProductsInfo table!");
+        console.log("Succesfully created productDetails table!");
     }
 });
 
