@@ -29,4 +29,27 @@ shipmentsRouter.post("", (req, res) => {
     })
 });
 
+shipmentsRouter.put("", (req, res) => {
+
+    db.query("UPDATE shipments SET shipmentFee=ISNULL(?,shipmentFee), status=ISNULL(?,status), departureDate=ISNULL(?,departureDate) WHERE shipmentId=?", [req.body.shipmentFee, req.body.status, req.body.departureDate, req.body.shipmentID], (err) => {
+        if(err != null){
+            res.status(500).json("Error updating row with " + req.body.shipmentID + " in shipments!");
+        }
+        else{
+            res.status(200).json("Succesfully updated row with " + req.body.shipmentID + " in shipments!");
+        }
+    })
+});
+
+shipmentsRouter.delete("", (req, res) => {
+    db.query("DELETE FROM shipments WHERE shipmentID=?;", [req.body.shipmentID], (err) => {
+        if(err != null){
+            res.status(500).json("Error deleting row with " + req.body.shipmentID + " in shipments!");
+        }
+        else{
+            res.status(200).json("Succesfully deleted row with " + req.body.shipmentID + " in shipments!");
+        }
+    })
+});
+
 module.exports = shipmentsRouter;

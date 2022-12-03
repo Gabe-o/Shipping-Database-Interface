@@ -29,4 +29,27 @@ productsRouter.post("", (req, res) => {
     })
 });
 
+productsRouter.put("", (req, res) => {
+
+    db.query("UPDATE products SET productName=(?,productName), price=(?,price), weight=(?,weight), WHERE productID=?;", [req.body.productName, erq.body.price, req.body.weight, req.body.productID], (err) => {
+        if(err != null){
+            res.status(500).json("Error updating row with productID: " + req.body.productID + " in products!");
+        }
+        else{
+            res.status(200).json("Succesfully updated row with productID: " + req.body.productID + " in products!");
+        }
+    })
+});
+
+productsRouter.delete("", (req, res) => {
+    db.query("DELETE FROM products WHERE productID=?;", [req.body.productID], (err) => {
+        if(err != null){
+            res.status(500).json("Error deleting row with productID: " + req.body.productID + " in products!");
+        }
+        else{
+            res.status(200).json("Succesfully deleted row with productID: " + req.body.productID + " in products!");
+        }
+    })
+});
+
 module.exports = productsRouter;

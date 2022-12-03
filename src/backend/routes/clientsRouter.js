@@ -31,5 +31,27 @@ clientsRouter.post("", (req, res) => {
     })
 });
 
+clientsRouter.put("", (req, res) => {
+
+    db.query("UPDATE clients name=ISNULL(?,name), phoneNo=(?,phoneNo) WHERE email=?;", [req.body.name, req.body.phoneNo, req.body.email], (err) => {
+        if(err != null){
+            res.status(500).json("Error updating row with email: " + req.body.email + " in clients!");
+        }
+        else{
+            res.status(200).json("Succesfully updated row with email: " + req.body.email + " in clients!");
+        }
+    })
+});
+
+clientsRouter.delete("", (req, res) => {
+    db.query("DELETE FROM clients WHERE email=?;", [req.body.email], (err) => {
+        if(err != null){
+            res.status(500).json("Error deleting row with email: " + req.body.email + " in clients!");
+        }
+        else{
+            res.status(200).json("Succesfully deleted row with email: " + req.body.email + " in clients!");
+        }
+    })
+});
 
 module.exports = clientsRouter;

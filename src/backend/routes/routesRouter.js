@@ -29,4 +29,27 @@ routesRouter.post("", (req, res) => {
     })
 });
 
+routesRouter.put("", (req, res) => {
+
+    db.query("UPDATE routes SET distance=(?,distance) WHERE routeNo=?;", [req.body.distance, req.body.routeNo], (err) => {
+        if(err != null){
+            res.status(500).json("Error updating row with routeNo: " + req.body.routeNo + " in routes!");
+        }
+        else{
+            res.status(200).json("Succesfully updated row with routeNo: " + req.body.routeNo + " in routes!");
+        }
+    })
+});
+
+routesRouter.delete("", (req, res) => {
+    db.query("DELETE FROM routes WHERE routeNo=?;", [req.body.routeNo], (err) => {
+        if(err != null){
+            res.status(500).json("Error deleting row with routeNo: " + req.body.routeNo + " in routes!");
+        }
+        else{
+            res.status(200).json("Succesfully deleted row with routeNo: " + req.body.routeNo + " in routes!");
+        }
+    })
+});
+
 module.exports = routesRouter;

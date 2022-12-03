@@ -29,4 +29,27 @@ productDetailsRouter.post("", (req, res) => {
     })
 });
 
+productDetailsRouter.put("", (req, res) => {
+
+    db.query("UPDATE productDetails quantity=ISNULL(?,quantity) WHERE shipmentNo=? AND productID=?;", [req.body.quantity, req.body.shipmentNo, req.body.shipmentNo], (err) => {
+        if(err != null){
+            res.status(500).json("Error updating row with shipmentNo: " + req.body.shipmentNo + " and productID: " + req.body.productID + " in productDetails!");
+        }
+        else{
+            res.status(200).json("Succesfully updated row with shipmentNo: " + req.body.shipmentNo + " and productID: " + req.body.productID + " in productDetails!");
+        }
+    });
+});
+
+productDetailsRouter.delete("", (req, res) => {
+    db.query("DELETE FROM productDetails WHERE shipmentNo=? AND productID=?;", [req.body.shipmentNo, req.body.productID], (err) => {
+        if(err != null){
+            res.status(500).json("Error deleting row with shipmentNo: " + req.body.shipmentNo + " and productID: " + req.body.productID + " in productDetails!");
+        }
+        else{
+            res.status(200).json("Succesfully deleted row with shipmentNo: " + req.body.shipmentNo + " and productID: " + req.body.productID + " in productDetails!");
+        }
+    });
+});
+
 module.exports = productDetailsRouter;
