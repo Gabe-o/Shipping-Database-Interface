@@ -8,25 +8,27 @@ function ShipmentDatesPage() {
     const [results, setResults] = useState([]);
 
     useEffect(() => {
-        fetch("http://" + window.location.hostname +":9000/api/shipmentDates", {method: "GET", headers: new Headers({ 'Content-Type': 'application/json' })})
-        .then(res => res.json())
-        .then(data => {
-            setResults(data);
-        })
-        .catch(err => {
-            console.log(err);
-        })
+        fetch("/api/shipmentDates", { method: "GET", headers: new Headers({ 'Content-Type': 'application/json' }) })
+            .then(res => res.json())
+            .then(data => {
+                setResults(data);
+            })
+            .catch(err => {
+                console.log(err);
+            })
     }, []);
 
-    const handleSubmit = () => {
-        fetch("http://" + window.location.hostname + ":9000/api/shipmentDates/primaryKey?routeNo=" + inputs.routeNo + "&departureDate=" + inputs.departureDate + "&shipID=" + inputs.shipID, {method: "GET", headers: new Headers({ 'Content-Type': 'application/json' })})
-        .then(res => res.json())
-        .then(data => {
-            setResults(data);
-        })
-        .catch(err => {
-            console.log(err);
-        })
+    const handleSubmit = (event) => {
+        event.preventDefault();
+
+        fetch("/api/shipmentDates/primaryKey?routeNo=" + inputs.routeNo + "&departureDate=" + inputs.departureDate + "&shipID=" + inputs.shipID, { method: "GET", headers: new Headers({ 'Content-Type': 'application/json' }) })
+            .then(res => res.json())
+            .then(data => {
+                setResults(data);
+            })
+            .catch(err => {
+                console.log(err);
+            })
     }
 
     const handleChange = (event) => {
@@ -34,7 +36,7 @@ function ShipmentDatesPage() {
         const value = event.target.value;
         setInputs(values => ({ ...values, [name]: value }))
     }
-    
+
     return (
         <React.Fragment>
             <h1>Shipment Dates Page</h1>

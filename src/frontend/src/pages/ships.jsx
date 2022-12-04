@@ -8,25 +8,27 @@ function ShipsPage() {
     const [results, setResults] = useState([]);
 
     useEffect(() => {
-        fetch("http://" + window.location.hostname +":9000/api/ships", {method: "GET", headers: new Headers({ 'Content-Type': 'application/json' })})
-        .then(res => res.json())
-        .then(data => {
-            setResults(data);
-        })
-        .catch(err => {
-            console.log(err);
-        })
+        fetch("/api/ships", { method: "GET", headers: new Headers({ 'Content-Type': 'application/json' }) })
+            .then(res => res.json())
+            .then(data => {
+                setResults(data);
+            })
+            .catch(err => {
+                console.log(err);
+            })
     }, []);
 
-    const handleSubmit = () => {
-        fetch("http://" + window.location.hostname + ":9000/api/ships/primaryKey?shipID=" + inputs.shipID, {method: "GET", headers: new Headers({ 'Content-Type': 'application/json' })})
-        .then(res => res.json())
-        .then(data => {
-            setResults(data);
-        })
-        .catch(err => {
-            console.log(err);
-        });
+    const handleSubmit = (event) => {
+        event.preventDefault();
+
+        fetch("/api/ships/primaryKey?shipID=" + inputs.shipID, { method: "GET", headers: new Headers({ 'Content-Type': 'application/json' }) })
+            .then(res => res.json())
+            .then(data => {
+                setResults(data);
+            })
+            .catch(err => {
+                console.log(err);
+            });
     }
 
     const handleChange = (event) => {
@@ -34,8 +36,8 @@ function ShipsPage() {
         const value = event.target.value;
         setInputs(values => ({ ...values, [name]: value }))
     }
-    
-    
+
+
     return (
         <React.Fragment>
             <h1>Ships Page</h1>
