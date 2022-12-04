@@ -1,0 +1,9 @@
+div.assignedShips {
+    float: left;
+    width: 50%;
+}
+
+div.availableShips {
+    float: left;
+    width: 50%;
+}
