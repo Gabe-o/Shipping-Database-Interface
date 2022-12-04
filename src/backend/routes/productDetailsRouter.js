@@ -6,6 +6,7 @@ const productDetailsRouter = express.Router();
 productDetailsRouter.get("", (req, res) => {
     db.query("SELECT * FROM productdetails", (err, data) => {
         if (err != null) {
+            console.log(err);
             res.status(500).json("Error getting productDetails data!")
         }
         else if (data.length === 0) {
@@ -21,6 +22,7 @@ productDetailsRouter.post("", (req, res) => {
 
     db.query("INSERT INTO productdetails VALUES (?, ?, ?);", [req.body.shipmentNo, req.body.productID, req.body.quantity], (err) => {
         if (err != null) {
+            console.log(err);
             res.status(500).json("Error inserting into productDetails!");
         }
         else {
@@ -31,8 +33,9 @@ productDetailsRouter.post("", (req, res) => {
 
 productDetailsRouter.put("", (req, res) => {
 
-    db.query("UPDATE productdetails quantity=ISNULL(?,quantity) WHERE shipmentNo=? AND productID=?;", [req.body.quantity, req.body.shipmentNo, req.body.shipmentNo], (err) => {
+    db.query("UPDATE productdetails SET quantity=IFNULL(?,quantity) WHERE shipmentNo=? AND productID=?;", [req.body.quantity, req.body.shipmentNo, req.body.shipmentNo], (err) => {
         if (err != null) {
+            console.log(err);
             res.status(500).json("Error updating row with shipmentNo: " + req.body.shipmentNo + " and productID: " + req.body.productID + " in productDetails!");
         }
         else {
@@ -44,6 +47,7 @@ productDetailsRouter.put("", (req, res) => {
 productDetailsRouter.delete("", (req, res) => {
     db.query("DELETE FROM productdetails WHERE shipmentNo=? AND productID=?;", [req.body.shipmentNo, req.body.productID], (err) => {
         if (err != null) {
+            console.log(err);
             res.status(500).json("Error deleting row with shipmentNo: " + req.body.shipmentNo + " and productID: " + req.body.productID + " in productDetails!");
         }
         else {
@@ -55,6 +59,7 @@ productDetailsRouter.delete("", (req, res) => {
 productDetailsRouter.get("/primaryKey", (req, res) => {
     db.query("SELECT * FROM productdetails WHERE shipmentNo LIKE ? AND productID LIKE ?;", ["%" + req.query.shipmentNo + "%", "%" + req.query.productID + "%"], (err, data) => {
         if (err != null) {
+            console.log(err);
             res.status(500).json("Error getting productDetails data where shipment number is " + req.query.shipmentNo + " and product id is " + req.query.productID + "!");
         }
         else if (data.length === 0) {

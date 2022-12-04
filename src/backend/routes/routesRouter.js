@@ -19,7 +19,7 @@ routesRouter.get("", (req, res) => {
 
 routesRouter.post("", (req, res) => {
 
-    db.query("INSERT INTO routes VALUES (?, ?, ?);", [req.body.startingPortNo, req.body.endingPortNo, req.body.distance], (err) => {
+    db.query("INSERT INTO routes (startingPortNo, endingPortNo, distance) VALUES (?, ?, ?);", [req.body.startingPortNo, req.body.endingPortNo, req.body.distance], (err) => {
         if (err != null) {
             res.status(500).json("Error inserting into routes!");
         }
@@ -31,7 +31,7 @@ routesRouter.post("", (req, res) => {
 
 routesRouter.put("", (req, res) => {
 
-    db.query("UPDATE routes SET distance=(?,distance) WHERE routeNo=?;", [req.body.distance, req.body.routeNo], (err) => {
+    db.query("UPDATE routes SET distance=IFNULL(?,distance) WHERE routeNo=?;", [req.body.distance, req.body.routeNo], (err) => {
         if (err != null) {
             res.status(500).json("Error updating row with routeNo: " + req.body.routeNo + " in routes!");
         }
