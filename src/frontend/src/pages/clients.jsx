@@ -8,25 +8,27 @@ function ClientsPage() {
     const [results, setResults] = useState([]);
 
     useEffect(() => {
-        fetch("http://" + window.location.hostname + ":9000/api/clients", {method: "GET", headers: new Headers({ 'Content-Type': 'application/json' })})
-        .then(res => res.json())
-        .then(data => {
-            setResults(data);
-        })
-        .catch(err => {
-            console.log(err);
-        })
+        fetch("/api/clients", { method: "GET", headers: new Headers({ 'Content-Type': 'application/json' }) })
+            .then(res => res.json())
+            .then(data => {
+                setResults(data);
+            })
+            .catch(err => {
+                console.log(err);
+            })
     }, []);
 
-    const handleSubmit = () => {
-        fetch("http://" + window.location.hostname + ":9000/api/clients/primaryKey?email=" + inputs.email, {method: "GET", headers: new Headers({ 'Content-Type': 'application/json' })})
-        .then(res => res.json())
-        .then(data => {
-            setResults(data);
-        })
-        .catch(err => {
-            console.log(err);
-        })
+    const handleSubmit = (event) => {
+        event.preventDefault();
+
+        fetch("/api/clients/primaryKey?email=" + inputs.email, { method: "GET", headers: new Headers({ 'Content-Type': 'application/json' }) })
+            .then(res => res.json())
+            .then(data => {
+                setResults(data);
+            })
+            .catch(err => {
+                console.log(err);
+            })
     }
 
     const handleChange = (event) => {
@@ -34,7 +36,7 @@ function ClientsPage() {
         const value = event.target.value;
         setInputs(values => ({ ...values, [name]: value }))
     }
-    
+
     return (
         <React.Fragment>
             <h1>Client's Page</h1>
