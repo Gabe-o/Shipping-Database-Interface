@@ -4,7 +4,7 @@ const db = require('../DBConnect.js');
 const productDetailsRouter = express.Router();
 
 productDetailsRouter.get("", (req, res) => {
-    db.query("SELECT * FROM productDetails", (err, data) => {
+    db.query("SELECT * FROM productdetails", (err, data) => {
         if (err != null) {
             res.status(500).json("Error getting productDetails data!")
         }
@@ -19,7 +19,7 @@ productDetailsRouter.get("", (req, res) => {
 
 productDetailsRouter.post("", (req, res) => {
 
-    db.query("INSERT INTO productDetails VALUES (?, ?, ?);", [req.body.shipmentNo, req.body.productID, req.body.quantity], (err) => {
+    db.query("INSERT INTO productdetails VALUES (?, ?, ?);", [req.body.shipmentNo, req.body.productID, req.body.quantity], (err) => {
         if (err != null) {
             res.status(500).json("Error inserting into productDetails!");
         }
@@ -31,7 +31,7 @@ productDetailsRouter.post("", (req, res) => {
 
 productDetailsRouter.put("", (req, res) => {
 
-    db.query("UPDATE productDetails quantity=ISNULL(?,quantity) WHERE shipmentNo=? AND productID=?;", [req.body.quantity, req.body.shipmentNo, req.body.shipmentNo], (err) => {
+    db.query("UPDATE productdetails quantity=ISNULL(?,quantity) WHERE shipmentNo=? AND productID=?;", [req.body.quantity, req.body.shipmentNo, req.body.shipmentNo], (err) => {
         if (err != null) {
             res.status(500).json("Error updating row with shipmentNo: " + req.body.shipmentNo + " and productID: " + req.body.productID + " in productDetails!");
         }
@@ -42,7 +42,7 @@ productDetailsRouter.put("", (req, res) => {
 });
 
 productDetailsRouter.delete("", (req, res) => {
-    db.query("DELETE FROM productDetails WHERE shipmentNo=? AND productID=?;", [req.body.shipmentNo, req.body.productID], (err) => {
+    db.query("DELETE FROM productdetails WHERE shipmentNo=? AND productID=?;", [req.body.shipmentNo, req.body.productID], (err) => {
         if (err != null) {
             res.status(500).json("Error deleting row with shipmentNo: " + req.body.shipmentNo + " and productID: " + req.body.productID + " in productDetails!");
         }
@@ -53,7 +53,7 @@ productDetailsRouter.delete("", (req, res) => {
 });
 
 productDetailsRouter.get("/primaryKey", (req, res) => {
-    db.query("SELECT * FROM productDetails WHERE shipmentNo LIKE ? AND productID LIKE ?;", ["%" + req.query.shipmentNo + "%", "%" + req.query.productID + "%"], (err, data) => {
+    db.query("SELECT * FROM productdetails WHERE shipmentNo LIKE ? AND productID LIKE ?;", ["%" + req.query.shipmentNo + "%", "%" + req.query.productID + "%"], (err, data) => {
         if (err != null) {
             res.status(500).json("Error getting productDetails data where shipment number is " + req.query.shipmentNo + " and product id is " + req.query.productID + "!");
         }

@@ -23,7 +23,7 @@ app.use((req, res, next) => { // for all routes
 app.use("/api/clients", clientsRouter);
 app.use("/api/products", productsRouter);
 app.use("/api/shipments", shipmentsRouter);
-app.use("/api/shipmentProductInformation", productDetailsRouter);
+app.use("/api/productDetails", productDetailsRouter);
 app.use("/api/shipmentDates", shipmentDatesRouter);
 app.use("/api/routes", routesRouter);
 app.use("/api/ports", portsRouter);

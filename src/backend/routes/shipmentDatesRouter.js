@@ -4,7 +4,7 @@ const db = require('../DBConnect.js');
 const shipmentDatesRouter = express.Router();
 
 shipmentDatesRouter.get("", (req, res) => {
-    db.query("SELECT * FROM shipmentDates", (err, data) => {
+    db.query("SELECT * FROM shipmentdates", (err, data) => {
         if (err != null) {
             res.status(500).json("Error getting shipmentDates data!")
         }
@@ -19,7 +19,7 @@ shipmentDatesRouter.get("", (req, res) => {
 
 shipmentDatesRouter.post("", (req, res) => {
 
-    db.query("INSERT INTO shipmentDates VALUES (?, ?, ?, ?);", [req.body.routeNo, req.body.departureDate, req.body.shipID, req.body.estArrivalDate], (err) => {
+    db.query("INSERT INTO shipmentdates VALUES (?, ?, ?, ?);", [req.body.routeNo, req.body.departureDate, req.body.shipID, req.body.estArrivalDate], (err) => {
         if (err != null) {
             res.status(500).json("Error inserting into shipmentDates!");
         }
@@ -31,7 +31,7 @@ shipmentDatesRouter.post("", (req, res) => {
 
 shipmentDatesRouter.put("", (req, res) => {
 
-    db.query("UPDATE shipmentDates SET shipID=ISNULL(?,shipID) estArrivalDate=ISNULL(?,estArrivalDate) WHERE routeNo=? AND departureDate=? AND shipID=?;", [req.body.estArrivalDate, req.body.routeNo, req.body.departureDate, req.body.shipID], (err) => {
+    db.query("UPDATE shipmentdates SET shipID=ISNULL(?,shipID) estArrivalDate=ISNULL(?,estArrivalDate) WHERE routeNo=? AND departureDate=? AND shipID=?;", [req.body.estArrivalDate, req.body.routeNo, req.body.departureDate, req.body.shipID], (err) => {
         if (err != null) {
             res.status(500).json("Error updating row with routeNo: " + req.body.routeNo + " and departureDate: " + req.body.departureDate + " and shipID: " + req.body.shipID + " in shipmentDates!");
         }
@@ -42,7 +42,7 @@ shipmentDatesRouter.put("", (req, res) => {
 });
 
 shipmentDatesRouter.delete("", (req, res) => {
-    db.query("DELETE FROM shipmentDATES WHERE routeNo=? AND departureDate=? AND shipID=?;", [req.body.routeNo, req.body.departureDate, req.body.shipID], (err) => {
+    db.query("DELETE FROM shipmentdates WHERE routeNo=? AND departureDate=? AND shipID=?;", [req.body.routeNo, req.body.departureDate, req.body.shipID], (err) => {
         if (err != null) {
             res.status(500).json("Error deleting row with routeNo: " + req.body.routeNo + " and departureDate: " + req.body.departureDate + " and shipID: " + req.body.shipID + " in shipmentDates!");
         }
@@ -53,7 +53,7 @@ shipmentDatesRouter.delete("", (req, res) => {
 });
 
 shipmentDatesRouter.get("/primaryKey", (req, res) => {
-    db.query("SELECT * FROM routes WHERE routeNo LIKE ? AND departureDate LIKE ? AND shipID LIKE ?;", ["%" + req.query.routeNe + "%", "%" + req.query.departureDate + "%", "%" + req.query.shipID + "%"], (err, data) => {
+    db.query("SELECT * FROM shipmentdates WHERE routeNo LIKE ? AND departureDate LIKE ? AND shipID LIKE ?;", ["%" + req.query.routeNe + "%", "%" + req.query.departureDate + "%", "%" + req.query.shipID + "%"], (err, data) => {
         if (err != null) {
             res.status(500).json("Error getting shipmentDates data where route number is " + req.query.routeNo + " and departure date is " + req.query.departureDate + " and ship id is " + req.query.shipID + "!");
         }
