@@ -13,25 +13,27 @@ import ShipsPage from "./pages/ships";
 import './styles/app.css';
 
 function App() {
-  return (
+    return (
         <BrowserRouter>
             <div className='App'>
-            <Navbar />
+                <Navbar />
                 <Routes>
-                    <Route path="" element={<HomePage />}/>
-                    <Route path="/home" element={<HomePage/>}/>
-                    <Route path="/clients" element={<ClientsPage/>}/>
-                    <Route path="/products" element={<ProductsPage/>}/>
-                    <Route path="/shipments" element={<ShipmentsPage/>}/>
-                    <Route path="/shipmentProductInformation" element={<ProductDetailsPage/>}/>
-                    <Route path="/shipmentDates" element={<ShipmentDatesPage/>}/>
-                    <Route path="/routes" element={<RoutesPagePage/>}/>
-                    <Route path="/ports" element={<PortsPage/>}/>
-                    <Route path="/ships" element={<ShipsPage/>}/>
+                    <Route path="" element={<HomePage />} />
+                    <Route path="/home" element={<HomePage />} />
+                    <Route path="/clients" element={<ClientsPage />} />
+                    <Route path="/products" element={<ProductsPage />} />
+                    <Route path="/shipments" element={<ShipmentsPage />} />
+                    <Route path="/shipmentProductInformation" element={<ProductDetailsPage />} />
+                    <Route path="/shipmentDates" element={<ShipmentDatesPage />} />
+                    <Route path="/routes" element={<RoutesPagePage />} />
+                    <Route path="/ports" element={<PortsPage />} />
+                    <Route path="/ships" element={<ShipsPage />} />
+                    <Route path="/assignRoutes" element={<assignRoutes />} />
+                    <Route path="/assignShips" element={<assignShips />} />
                 </Routes>
             </div>
         </BrowserRouter>
-  );
+    );
 }
 
 export default App;
