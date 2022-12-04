@@ -12,6 +12,7 @@ function PortsPage() {
             .then(res => res.json())
             .then(data => {
                 setResults(data);
+                console.log(data);
             })
             .catch(err => {
                 console.log(err);
@@ -21,16 +22,16 @@ function PortsPage() {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        if(event.event === "enter"){
-            fetch("/api/ports/primaryKey?portNo=" + inputs.portNo, { method: "GET", headers: new Headers({ 'Content-Type': 'application/json' }) })
+        fetch("/api/ports/primaryKey?portNo=" + inputs.portNo, { method: "GET", headers: new Headers({ 'Content-Type': 'application/json' }) })
             .then(res => res.json())
             .then(data => {
                 setResults(data);
+                console.log(data);
             })
             .catch(err => {
                 console.log(err);
             });
-        }
+
     }
 
     const handleChange = (event) => {
@@ -45,6 +46,18 @@ function PortsPage() {
             <form onSubmit={handleSubmit}>
                 <input type="text" name="portNo" onChange={handleChange} placeholder="Port Number" value={inputs.portNo || ""} />
             </form>
+            <table>
+                <tr>
+                    <th>Port Number</th>
+                    <th>Region</th>
+                    <th>Port Name</th>
+                    <th>Country</th>
+                    <th>Latitude</th>
+                    <th>Longitude</th>
+                    <th>Edit Table</th>
+                </tr>
+                {results.length !== 0 ? results.map((port, c) => <Port {...port} key={c} />) : null}
+            </table>
         </React.Fragment>
     );
 }

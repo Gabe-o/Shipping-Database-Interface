@@ -12,6 +12,7 @@ function ShipmentDatesPage() {
             .then(res => res.json())
             .then(data => {
                 setResults(data);
+                console.log(data);
             })
             .catch(err => {
                 console.log(err);
@@ -20,17 +21,15 @@ function ShipmentDatesPage() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-
-        if(event.event === "submit"){
-            fetch("/api/shipmentDates/primaryKey?routeNo=" + inputs.routeNo + "&departureDate=" + inputs.departureDate + "&shipID=" + inputs.shipID, { method: "GET", headers: new Headers({ 'Content-Type': 'application/json' }) })
+        fetch("/api/shipmentDates/primaryKey?routeNo=" + inputs.routeNo + "&departureDate=" + inputs.departureDate + "&shipID=" + inputs.shipID, { method: "GET", headers: new Headers({ 'Content-Type': 'application/json' }) })
             .then(res => res.json())
             .then(data => {
                 setResults(data);
+                console.log(data);
             })
             .catch(err => {
                 console.log(err);
             });
-        }
     }
 
     const handleChange = (event) => {
@@ -48,6 +47,16 @@ function ShipmentDatesPage() {
                 <input type="text" name="shipID" onChange={handleChange} placeholder="Ship ID" value={inputs.shipID || ""} />
                 <button type="submit">Search</button>
             </form>
+            <table>
+                <tr>
+                    <th>Route Number</th>
+                    <th>Departure Date (yyyy/mm/dd hh:mm:ss)</th>
+                    <th>Ship ID</th>
+                    <th>Estimated Arrival Date (yyyy/mm/dd hh:mm:ss)</th>
+                    <th>Edit Table</th>
+                </tr>
+                {results.length !== 0 ? results.map((shipmentDate, c) => <ShipmentDate {...shipmentDate} key={c} />) : null}
+            </table>
         </React.Fragment>
     );
 }

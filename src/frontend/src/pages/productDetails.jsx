@@ -12,6 +12,7 @@ function ProductDetailsPage() {
             .then(res => res.json())
             .then(data => {
                 setResults(data);
+                console.log(data);
             })
             .catch(err => {
                 console.log(err);
@@ -20,17 +21,15 @@ function ProductDetailsPage() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-
-        if(event.event === "submit"){
-            fetch("/api/productDetails/primaryKey?shipmentNo=" + inputs.portNo + "&productID=" + inputs.productID, { method: "GET", headers: new Headers({ 'Content-Type': 'application/json' }) })
+        fetch("/api/productDetails/primaryKey?shipmentNo=" + inputs.shipmentNo + "&productID=" + inputs.productID, { method: "GET", headers: new Headers({ 'Content-Type': 'application/json' }) })
             .then(res => res.json())
             .then(data => {
                 setResults(data);
+                console.log(data);
             })
             .catch(err => {
                 console.log(err);
             });
-        }
     }
 
     const handleChange = (event) => {
@@ -47,6 +46,13 @@ function ProductDetailsPage() {
                 <input type="text" name="productID" onChange={handleChange} placeholder="Product ID" value={inputs.productID || ""} />
                 <button type="submit">Search</button>
             </form>
+            <tr>
+                <th>Shipment Number</th>
+                <th>Product ID</th>
+                <th>Quantity</th>
+                <th>Edit Table</th>
+            </tr>
+            {results.length !== 0 ? results.map((productDetail, c) => <ProductDetail {...productDetail} key={c} />) : null}
         </React.Fragment>
     );
 }

@@ -42,7 +42,7 @@ shipmentsRouter.put("", (req, res) => {
 });
 
 shipmentsRouter.delete("", (req, res) => {
-    db.query("DELETE FROM shipments WHERE shipmentID=?;", [req.body.shipmentID], (err) => {
+    db.query("DELETE FROM shipments WHERE shipmentNo=?;", [req.body.shipmentID], (err) => {
         if (err != null) {
             res.status(500).json("Error deleting row with " + req.body.shipmentID + " in shipments!");
         }
@@ -53,7 +53,7 @@ shipmentsRouter.delete("", (req, res) => {
 });
 
 shipmentsRouter.get("/primaryKey", (req, res) => {
-    db.query("SELECT * FROM shipments WHERE shipmentID LIKE ?;", ["%" + req.query.shipmentID + "%"], (err, data) => {
+    db.query("SELECT * FROM shipments WHERE shipmentNo LIKE ?;", ["%" + req.query.shipmentID + "%"], (err, data) => {
         if (err != null) {
             res.status(500).json("Error getting shipments data where shipment id is " + req.query.shipmentID + "!");
         }

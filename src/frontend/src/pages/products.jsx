@@ -12,6 +12,7 @@ function ProductsPage() {
             .then(res => res.json())
             .then(data => {
                 setResults(data);
+                console.log(data);
             })
             .catch(err => {
                 console.log(err);
@@ -20,17 +21,15 @@ function ProductsPage() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-
-        if(event.event === "enter"){
-            fetch("/api/products/primaryKey?productID=" + inputs.productID, { method: "GET", headers: new Headers({ 'Content-Type': 'application/json' }) })
+        fetch("/api/products/primaryKey?productID=" + inputs.productID, { method: "GET", headers: new Headers({ 'Content-Type': 'application/json' }) })
             .then(res => res.json())
             .then(data => {
                 setResults(data);
+                console.log(data);
             })
             .catch(err => {
                 console.log(err);
             });
-        }
     }
 
     const handleChange = (event) => {
@@ -45,6 +44,17 @@ function ProductsPage() {
             <form onSubmit={handleSubmit}>
                 <input type="text" name="productID" onChange={handleChange} placeholder="Product ID" value={inputs.productID || ""} />
             </form>
+            <table>
+                <tr>
+                    <th>Product ID</th>
+                    <th>Product Name</th>
+                    <th>Price ($)</th>
+                    <th>Weight (kg)</th>
+                    <th>Email</th>
+                    <th>Edit Table</th>
+                </tr>
+                {results.length !== 0 ? results.map((product, c) => <Product {...product} key={c} />) : null}
+            </table>
         </React.Fragment>
     );
 }

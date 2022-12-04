@@ -12,6 +12,7 @@ function ShipmentsPage() {
             .then(res => res.json())
             .then(data => {
                 setResults(data);
+                console.log(data);
             })
             .catch(err => {
                 console.log(err);
@@ -21,16 +22,15 @@ function ShipmentsPage() {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        if(event.event === "enter"){
-            fetch("/api/shipments/primaryKey?shipmentID=" + inputs.shipmentID, { method: "GET", headers: new Headers({ 'Content-Type': 'application/json' }) })
+        fetch("/api/shipments/primaryKey?shipmentID=" + inputs.shipmentID, { method: "GET", headers: new Headers({ 'Content-Type': 'application/json' }) })
             .then(res => res.json())
             .then(data => {
                 setResults(data);
+                console.log(data);
             })
             .catch(err => {
                 console.log(err);
             });
-        }
     }
 
     const handleChange = (event) => {
@@ -45,6 +45,19 @@ function ShipmentsPage() {
             <form onSubmit={handleSubmit}>
                 <input type="text" name="shipmentID" onChange={handleChange} placeholder="Shipment ID" value={inputs.shipmentID || ""} />
             </form>
+            <table>
+                <tr>
+                    <th>Shipment Number</th>
+                    <th>Route Number</th>
+                    <th>Shipment Fee ($)</th>
+                    <th>Status</th>
+                    <th>Departure Date (yyyy/mm/dd hh:mm:ss)</th>
+                    <th>Ship ID</th>
+                    <th>Email</th>
+                    <th>Edit Table</th>
+                </tr>
+                {results.length !== 0 ? results.map((shipment, c) => <Shipment {...shipment} key={c} />) : null}
+            </table>
         </React.Fragment>
     );
 }
