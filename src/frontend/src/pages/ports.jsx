@@ -21,14 +21,16 @@ function PortsPage() {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        fetch("/api/ports/primaryKey?portNo=" + inputs.portNo, { method: "GET", headers: new Headers({ 'Content-Type': 'application/json' }) })
+        if(event.event === "enter"){
+            fetch("/api/ports/primaryKey?portNo=" + inputs.portNo, { method: "GET", headers: new Headers({ 'Content-Type': 'application/json' }) })
             .then(res => res.json())
             .then(data => {
                 setResults(data);
             })
             .catch(err => {
                 console.log(err);
-            })
+            });
+        }
     }
 
     const handleChange = (event) => {

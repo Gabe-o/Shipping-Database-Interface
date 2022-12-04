@@ -21,7 +21,8 @@ function ShipsPage() {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        fetch("/api/ships/primaryKey?shipID=" + inputs.shipID, { method: "GET", headers: new Headers({ 'Content-Type': 'application/json' }) })
+        if(event.event === "enter"){
+            fetch("/api/ships/primaryKey?shipID=" + inputs.shipID, { method: "GET", headers: new Headers({ 'Content-Type': 'application/json' }) })
             .then(res => res.json())
             .then(data => {
                 setResults(data);
@@ -29,6 +30,7 @@ function ShipsPage() {
             .catch(err => {
                 console.log(err);
             });
+        }
     }
 
     const handleChange = (event) => {

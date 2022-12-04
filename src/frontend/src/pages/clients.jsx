@@ -21,14 +21,16 @@ function ClientsPage() {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        fetch("/api/clients/primaryKey?email=" + inputs.email, { method: "GET", headers: new Headers({ 'Content-Type': 'application/json' }) })
+        if(event.event === "enter"){
+            fetch("/api/clients/primaryKey?email=" + inputs.email, { method: "GET", headers: new Headers({ 'Content-Type': 'application/json' }) })
             .then(res => res.json())
             .then(data => {
                 setResults(data);
             })
             .catch(err => {
                 console.log(err);
-            })
+            });
+        }
     }
 
     const handleChange = (event) => {

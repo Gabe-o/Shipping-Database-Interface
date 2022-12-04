@@ -21,7 +21,8 @@ function ShipmentsPage() {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        fetch("/api/shipments/primaryKey?shipmentID=" + inputs.shipmentID, { method: "GET", headers: new Headers({ 'Content-Type': 'application/json' }) })
+        if(event.event === "enter"){
+            fetch("/api/shipments/primaryKey?shipmentID=" + inputs.shipmentID, { method: "GET", headers: new Headers({ 'Content-Type': 'application/json' }) })
             .then(res => res.json())
             .then(data => {
                 setResults(data);
@@ -29,6 +30,7 @@ function ShipmentsPage() {
             .catch(err => {
                 console.log(err);
             });
+        }
     }
 
     const handleChange = (event) => {

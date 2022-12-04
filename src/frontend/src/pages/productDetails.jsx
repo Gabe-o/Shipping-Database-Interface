@@ -21,14 +21,16 @@ function ProductDetailsPage() {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        fetch("/api/productDetails/primaryKey?shipmentNo=" + inputs.portNo + "&productID=" + inputs.productID, { method: "GET", headers: new Headers({ 'Content-Type': 'application/json' }) })
+        if(event.event === "submit"){
+            fetch("/api/productDetails/primaryKey?shipmentNo=" + inputs.portNo + "&productID=" + inputs.productID, { method: "GET", headers: new Headers({ 'Content-Type': 'application/json' }) })
             .then(res => res.json())
             .then(data => {
                 setResults(data);
             })
             .catch(err => {
                 console.log(err);
-            })
+            });
+        }
     }
 
     const handleChange = (event) => {
