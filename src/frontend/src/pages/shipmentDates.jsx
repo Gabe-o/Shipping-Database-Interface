@@ -1,6 +1,6 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
-import ShipmentDate from '../components/shipmentDate';
+import ShipmentDate from '../components/shipmentDate/shipmentDate';
 
 function ShipmentDatesPage() {
 

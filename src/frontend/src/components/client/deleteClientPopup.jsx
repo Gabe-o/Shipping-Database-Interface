@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../styles/clientPopup.css';
+import '../../styles/clientPopup.css';
 
 const ClientDeletePopup = ({ buttonState, client }) => {
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
-import Client from '../components/client';
-import ClientInsertPopup from '../components/clientInsertPopup';
+import Client from '../components/client/client';
+import ClientInsertPopup from '../components/client/clientInsertPopup';
 
 function ClientsPage() {
 

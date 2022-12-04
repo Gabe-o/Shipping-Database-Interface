@@ -1,6 +1,6 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
-import Ship from '../components/ship';
+import Ship from '../components/ship/ship';
 
 function ShipsPage() {
 

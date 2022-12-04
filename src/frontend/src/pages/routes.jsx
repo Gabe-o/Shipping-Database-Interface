@@ -1,6 +1,6 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
-import Route from '../components/route';
+import Route from '../components/route/route';
 
 function RoutesPage() {
 

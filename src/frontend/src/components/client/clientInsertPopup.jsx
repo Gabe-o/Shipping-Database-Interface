@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import '../styles/clientPopup.css';
+import '../../styles/clientPopup.css';
 
-const ClientUpdatePopup = ({ buttonState, client }) => {
+const ClientInsertPopup = ({ buttonState }) => {
 
     const [inputs, setInputs] = useState({});
 
@@ -17,7 +17,7 @@ const ClientUpdatePopup = ({ buttonState, client }) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        fetch("/api/clients", { method: "PUT", body: JSON.stringify({ "email": client.email, "name": inputs.name ? inputs.name : null, "phoneNo": inputs.phoneNo ? inputs.phoneNo : null }), headers: new Headers({ 'Content-Type': 'application/json' }) })
+        fetch("/api/clients", { method: "POST", body: JSON.stringify({ "email": inputs.email, "name": inputs.name ? inputs.name : null, "phoneNo": inputs.phoneNo ? inputs.phoneNo : null }), headers: new Headers({ 'Content-Type': 'application/json' }) })
             .then(res => {
                 return res.json().then(data => {
                     if (res.ok) {
@@ -42,8 +42,17 @@ const ClientUpdatePopup = ({ buttonState, client }) => {
                     <div className="popup-overlay" />
                     <div className="popup">
                         <button className="popup-close" onClick={handleClose}>X</button>
-                        <h1>Edit client with email: {client.email}</h1>
+                        <h1>Create Client Form</h1>
                         <form onSubmit={handleSubmit}>
+                            <label className="form-label">Email:
+                                <input
+                                    className="form-input"
+                                    type="text"
+                                    name="email"
+                                    onChange={handleChange}
+                                    placeholder="Enter email"
+                                />
+                            </label>
                             <label className="form-label">Name:
                                 <input
                                     className="form-input"
@@ -63,7 +72,7 @@ const ClientUpdatePopup = ({ buttonState, client }) => {
                                     placeholder="Enter phone number"
                                 />
                             </label>
-                            <button className="form-button" type="submit">Update</button>
+                            <button className="form-button" type="submit">Add Client</button>
                         </form>
                     </div>
                 </React.Fragment>
@@ -72,4 +81,4 @@ const ClientUpdatePopup = ({ buttonState, client }) => {
     );
 };
 
-export default ClientUpdatePopup;
+export default ClientInsertPopup;

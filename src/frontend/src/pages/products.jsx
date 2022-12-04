@@ -1,6 +1,6 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
-import Product from '../components/product';
+import Product from '../components/product/product';
 
 function ProductsPage() {
 

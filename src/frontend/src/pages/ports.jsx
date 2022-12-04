@@ -1,6 +1,6 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
-import Port from '../components/port';
+import Port from '../components/port/port';
 
 function PortsPage() {
 

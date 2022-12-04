@@ -1,6 +1,6 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
-import ProductDetail from '../components/productDetail';
+import ProductDetail from '../components/productDetail/productDetail';
 
 function ProductDetailsPage() {
 
