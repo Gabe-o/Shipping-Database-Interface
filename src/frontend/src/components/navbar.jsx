@@ -7,40 +7,49 @@ function Navbar() {
     const navigate = useNavigate();
 
     const homeButton = () => {
-        navigate("/home", {replace: true});
+        navigate("/home", { replace: true });
     }
 
     const clientsButton = () => {
-        navigate("/clients", {replace: true});
+        navigate("/clients", { replace: true });
     }
 
     const productsButton = () => {
-        navigate("/products", {replace: true});
+        navigate("/products", { replace: true });
     }
 
     const shipmentsButton = () => {
-        navigate("/shipments", {replace: true});
+        navigate("/shipments", { replace: true });
     }
 
     const shipmentProductInformationButton = () => {
-        navigate("/shipmentProductInformation", {replace: true});
+        navigate("/shipmentProductInformation", { replace: true });
     }
 
     const shipmentDatesButton = () => {
-        navigate("/shipmentDates", {replace: true});
+        navigate("/shipmentDates", { replace: true });
     }
 
     const routesButton = () => {
-        navigate("/routes", {replace: true});
+        navigate("/routes", { replace: true });
     }
 
     const portsButton = () => {
-        navigate("/ports", {replace: true});
+        navigate("/ports", { replace: true });
     }
 
     const shipsButton = () => {
-        navigate("/ships", {replace: true});
+        navigate("/ships", { replace: true });
     }
+
+    const assignShipsButton = () => {
+        navigate("/assignShips", { replace: true });
+    }
+
+    const assignRoutesButton = () => {
+        navigate("/assignRoutes", { replace: true });
+    }
+
     //returns button in nav bar
     return (
         <React.Fragment>
@@ -73,6 +82,12 @@ function Navbar() {
                         </li>
                         <li>
                             <button className="navBarB" onClick={shipsButton}>Ships</button>
+                        </li>
+                        <li>
+                            <button className="navBarB" onClick={assignShipsButton}>Assign Ships</button>
+                        </li>
+                        <li>
+                            <button className="navBarB" onClick={assignRoutesButton}>Assign Routes</button>
                         </li>
                     </ul>
                 </div>
