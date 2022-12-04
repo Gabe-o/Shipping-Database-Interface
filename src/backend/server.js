@@ -9,6 +9,7 @@ const shipmentDatesRouter = require("./routes/shipmentDatesRouter");
 const routesRouter = require("./routes/routesRouter");
 const portsRouter = require("./routes/portsRouter");
 const shipsRouter = require("./routes/shipsRouter");
+const complexRouter = require("./routes/complexRouter")
 
 const app = express();
 
@@ -28,6 +29,7 @@ app.use("/api/shipmentDates", shipmentDatesRouter);
 app.use("/api/routes", routesRouter);
 app.use("/api/ports", portsRouter);
 app.use("/api/ships", shipsRouter);
+app.use("/api/complex", complexRouter);
 
 const port = process.env.PORT || 9000;
 
