@@ -32,11 +32,13 @@ clientsRouter.post("", (req, res) => {
 
 clientsRouter.put("", (req, res) => {
 
-    db.query("UPDATE clients name=ISNULL(?,name), phoneNo=(?,phoneNo) WHERE email=?;", [req.body.name, req.body.phoneNo, req.body.email], (err) => {
+    db.query("UPDATE clients SET name=IFNULL(?,name), phoneNo=IFNULL(?,phoneNo) WHERE email=?;", [req.body.name, req.body.phoneNo, req.body.email], (err) => {
         if (err != null) {
+            console.log(err);
             res.status(500).json("Error updating row with email: " + req.body.email + " in clients!");
         }
         else {
+            console.log(req.body.name + " " + req.body.phoneNo);
             res.status(200).json("Succesfully updated row with email: " + req.body.email + " in clients!");
         }
     })

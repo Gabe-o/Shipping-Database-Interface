@@ -31,7 +31,7 @@ shipmentDatesRouter.post("", (req, res) => {
 
 shipmentDatesRouter.put("", (req, res) => {
 
-    db.query("UPDATE shipmentdates SET shipID=ISNULL(?,shipID) estArrivalDate=ISNULL(?,estArrivalDate) WHERE routeNo=? AND departureDate=? AND shipID=?;", [req.body.estArrivalDate, req.body.routeNo, req.body.departureDate, req.body.shipID], (err) => {
+    db.query("UPDATE shipmentdates SET shipID=IFNULL(?,shipID) estArrivalDate=IFNULL(?,estArrivalDate) WHERE routeNo=? AND departureDate=? AND shipID=?;", [req.body.estArrivalDate, req.body.routeNo, req.body.departureDate, req.body.shipID], (err) => {
         if (err != null) {
             res.status(500).json("Error updating row with routeNo: " + req.body.routeNo + " and departureDate: " + req.body.departureDate + " and shipID: " + req.body.shipID + " in shipmentDates!");
         }

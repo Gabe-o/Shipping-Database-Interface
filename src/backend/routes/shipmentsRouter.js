@@ -19,7 +19,7 @@ shipmentsRouter.get("", (req, res) => {
 
 shipmentsRouter.post("", (req, res) => {
 
-    db.query("INSERT INTO shipments VALUES (?, ?, ?, ?, ?, ?, ?);", [req.body.routeNo, req.body.shipmentFee, req.body.status, req.body.departureDate, req.body.shipID, req.body.email], (err) => {
+    db.query("INSERT INTO shipments (routeNo, shipmentFee, status, departureDate, shipID, email) VALUES (?, ?, ?, ?, ?, ?);", [req.body.routeNo, req.body.shipmentFee, req.body.status, req.body.departureDate, req.body.shipID, req.body.email], (err) => {
         if (err != null) {
             res.status(500).json("Error inserting into shipments!");
         }
@@ -31,34 +31,36 @@ shipmentsRouter.post("", (req, res) => {
 
 shipmentsRouter.put("", (req, res) => {
 
-    db.query("UPDATE shipments SET shipmentFee=ISNULL(?,shipmentFee), status=ISNULL(?,status), departureDate=ISNULL(?,departureDate) WHERE shipmentId=?", [req.body.shipmentFee, req.body.status, req.body.departureDate, req.body.shipmentID], (err) => {
+    db.query("UPDATE shipments SET shipmentFee=IFNULL(?,shipmentFee), status=IFNULL(?,status), departureDate=IFNULL(?,departureDate) WHERE shipmentNo=?", [req.body.shipmentFee, req.body.status, req.body.departureDate, req.body.shipmentNo], (err) => {
+        console.log(req.body);
         if (err != null) {
-            res.status(500).json("Error updating row with " + req.body.shipmentID + " in shipments!");
+            console.log(err)
+            res.status(500).json("Error updating row with " + req.body.shipmentNo + " in shipments!");
         }
         else {
-            res.status(200).json("Succesfully updated row with " + req.body.shipmentID + " in shipments!");
+            res.status(200).json("Succesfully updated row with " + req.body.shipmentNo + " in shipments!");
         }
     })
 });
 
 shipmentsRouter.delete("", (req, res) => {
-    db.query("DELETE FROM shipments WHERE shipmentID=?;", [req.body.shipmentID], (err) => {
+    db.query("DELETE FROM shipments WHERE shipmentNo=?;", [req.body.shipmentNo], (err) => {
         if (err != null) {
-            res.status(500).json("Error deleting row with " + req.body.shipmentID + " in shipments!");
+            res.status(500).json("Error deleting row with " + req.body.shipmentNo + " in shipments!");
         }
         else {
-            res.status(200).json("Succesfully deleted row with " + req.body.shipmentID + " in shipments!");
+            res.status(200).json("Succesfully deleted row with " + req.body.shipmentNo + " in shipments!");
         }
     })
 });
 
 shipmentsRouter.get("/primaryKey", (req, res) => {
-    db.query("SELECT * FROM shipments WHERE shipmentID LIKE ?;", ["%" + req.query.shipmentID + "%"], (err, data) => {
+    db.query("SELECT * FROM shipments WHERE shipmentNo LIKE ?;", ["%" + req.query.shipmentNo + "%"], (err, data) => {
         if (err != null) {
-            res.status(500).json("Error getting shipments data where shipment id is " + req.query.shipmentID + "!");
+            res.status(500).json("Error getting shipments data where shipment id is " + req.query.shipmentNo + "!");
         }
         else if (data.length === 0) {
-            res.status(404).json("No shipments data found for shipment id " + req.query.shipmentID + "!")
+            res.status(404).json("No shipments data found for shipment id " + req.query.shipmentNo + "!")
         }
         else {
             res.status(200).json(data);
