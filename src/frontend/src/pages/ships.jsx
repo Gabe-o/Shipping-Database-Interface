@@ -50,7 +50,6 @@ function ShipsPage() {
     }
 
     const handleChange = (event) => {
-        <button onClick={insertShipButton}>Add Ship</button>
         const name = event.target.name;
         const value = event.target.value;
         setInputs(values => ({ ...values, [name]: value }))
@@ -59,6 +58,7 @@ function ShipsPage() {
     return (
         <React.Fragment>
             <h1>Ships Page</h1>
+            <button onClick={insertShipButton}>Add Ship</button>
             <form onSubmit={handleSubmit}>
                 <input type="text" name="shipID" onChange={handleChange} placeholder="Ship ID" value={inputs.shipID || ""} />
             </form>

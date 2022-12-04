@@ -29,7 +29,7 @@ function ShipmentsPage() {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        fetch("/api/shipments/primaryKey?shipmentID=" + inputs.shipmentID, { method: "GET", headers: new Headers({ 'Content-Type': 'application/json' }) })
+        fetch("/api/shipments/primaryKey?shipmentNo=" + inputs.shipmentID, { method: "GET", headers: new Headers({ 'Content-Type': 'application/json' }) })
             .then(res => {
                 return res.json().then(data => {
                     if (res.ok) {

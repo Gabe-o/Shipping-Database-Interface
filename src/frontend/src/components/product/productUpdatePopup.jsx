@@ -17,7 +17,7 @@ const ProductUpdatePopup = ({ buttonState, product }) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        fetch("/api/products", { method: "PUT", body: JSON.stringify({ "productName": inputs.productName ? inputs.productName : null, "price": inputs.price ? inputs.price : null, "weight": inputs.weight ? inputs.weight : null }), headers: new Headers({ 'Content-Type': 'application/json' }) })
+        fetch("/api/products", { method: "PUT", body: JSON.stringify({ "productID": product.productID, "productName": inputs.productName ? inputs.productName : null, "price": inputs.price ? inputs.price : null, "weight": inputs.weight ? inputs.weight : null }), headers: new Headers({ 'Content-Type': 'application/json' }) })
             .then(res => {
                 return res.json().then(data => {
                     if (res.ok) {

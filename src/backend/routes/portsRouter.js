@@ -31,7 +31,7 @@ portsRouter.post("", (req, res) => {
 
 portsRouter.put("", (req, res) => {
 
-    db.query("UPDATE ports SET region=ISNULL(?,region), portName=ISNULL(?,portName), country=ISNULL(?,country), latitude=ISNULL(?,latitude), longitude=ISNULL(?,longitude) WHERE portNo=?", [req.body.region, req.body.portName, req.body.country, req.body.latitude, req.body.longitude, req.body.portNo], (err) => {
+    db.query("UPDATE ports SET region=IFNULL(?,region), portName=IFNULL(?,portName), country=IFNULL(?,country), latitude=IFNULL(?,latitude), longitude=IFNULL(?,longitude) WHERE portNo=?", [req.body.region, req.body.portName, req.body.country, req.body.latitude, req.body.longitude, req.body.portNo], (err) => {
         if (err != null) {
             res.status(500).json("Error updating row with portNo: " + req.body.portNo + " in ports!");
         }

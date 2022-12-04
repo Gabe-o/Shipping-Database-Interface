@@ -6,6 +6,7 @@ const productsRouter = express.Router();
 productsRouter.get("", (req, res) => {
     db.query("SELECT * FROM products", (err, data) => {
         if (err != null) {
+            console.log(err);
             res.status(500).json("Error getting products data!")
         }
         else if (data.length === 0) {
@@ -19,8 +20,9 @@ productsRouter.get("", (req, res) => {
 
 productsRouter.post("", (req, res) => {
 
-    db.query("INSERT INTO products VALUES (?, ?, ?, ?);", [req.body.productName, req.body.price, req.body.weight, req.body.email], (err) => {
+    db.query("INSERT INTO products (productName, price, weight, email) VALUES (?, ?, ?, ?);", [req.body.productName, req.body.price, req.body.weight, req.body.email], (err) => {
         if (err != null) {
+            console.log(err);
             res.status(500).json("Error inserting into products!");
         }
         else {
@@ -31,8 +33,9 @@ productsRouter.post("", (req, res) => {
 
 productsRouter.put("", (req, res) => {
 
-    db.query("UPDATE products SET productName=(?,productName), price=(?,price), weight=(?,weight), WHERE productID=?;", [req.body.productName, erq.body.price, req.body.weight, req.body.productID], (err) => {
+    db.query("UPDATE products SET productName=IFNULL(?,productName), price=IFNULL(?,price), weight=IFNULL(?,weight) WHERE productID=?;", [req.body.productName, req.body.price, req.body.weight, req.body.productID], (err) => {
         if (err != null) {
+            console.log(err);
             res.status(500).json("Error updating row with productID: " + req.body.productID + " in products!");
         }
         else {
@@ -44,6 +47,7 @@ productsRouter.put("", (req, res) => {
 productsRouter.delete("", (req, res) => {
     db.query("DELETE FROM products WHERE productID=?;", [req.body.productID], (err) => {
         if (err != null) {
+            console.log(err);
             res.status(500).json("Error deleting row with productID: " + req.body.productID + " in products!");
         }
         else {

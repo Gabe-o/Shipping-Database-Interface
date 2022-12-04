@@ -19,8 +19,9 @@ shipsRouter.get("", (req, res) => {
 
 shipsRouter.post("", (req, res) => {
 
-    db.query("INSERT INTO ships VALUES (?, ?, ?, ?, ?, ?);", [req.body.shipName, req.body.maxCargoWeight, req.body.captain, req.body.routeNo, req.body.maxRange, req.body.speed], (err) => {
+    db.query("INSERT INTO ships (shipname, maxCargoWeight, captain, routeNo, homePortNo, maxRange, speed) VALUES (?, ?, ?, ?, ?, ?, ?);", [req.body.shipName, req.body.maxCargoWeight, req.body.captain, req.body.routeNo, req.body.homePortNo, req.body.maxRange, req.body.speed], (err) => {
         if (err != null) {
+            console.log(err);
             res.status(500).json("Error inserting into ships!");
         }
         else {
@@ -31,7 +32,7 @@ shipsRouter.post("", (req, res) => {
 
 shipsRouter.put("", (req, res) => {
 
-    db.query("UPDATE ships SET shipname=ISNULL(?,shipname), maxCargoWeight=ISNULL(?,maxCargoWeight), captain=ISNULL(?,captain), maxRange=ISNULL(?,maxRange), speed=ISNULL(?,speed) WHERE shipID=?;", [req.body.shipName, req.body.maxCargoWeight, req.body.captain, req.body.maxRange, req.body.speed, req.body.shipID], (err) => {
+    db.query("UPDATE ships SET shipname=IFNULL(?,shipname), maxCargoWeight=IFNULL(?,maxCargoWeight), captain=IFNULL(?,captain), homePortNo=IFNULL(?,homePortNo), maxRange=IFNULL(?,maxRange), speed=IFNULL(?,speed) WHERE shipID=?;", [req.body.shipName, req.body.maxCargoWeight, req.body.captain, req.body.homePortNo, req.body.maxRange, req.body.speed, req.body.shipID], (err) => {
         if (err != null) {
             res.status(500).json("Error updating row with " + req.body.shipID + " in ships!");
         }

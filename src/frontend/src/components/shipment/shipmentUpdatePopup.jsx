@@ -17,7 +17,7 @@ const ShipmentUpdatePopup = ({ buttonState, shipment }) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        fetch("/api/shipments", { method: "PUT", body: JSON.stringify({ "shipmentNo": shipment.shipment, "shipmentFee": inputs.shipmentFee ? inputs.shipmentFee : null, "status": inputs.status ? inputs.status : null, "departureDate": inputs.departureDate ? inputs.departureDate : null }), headers: new Headers({ 'Content-Type': 'application/json' }) })
+        fetch("/api/shipments", { method: "PUT", body: JSON.stringify({ "shipmentNo": shipment.shipmentNo, "shipmentFee": inputs.shipmentFee ? inputs.shipmentFee : null, "status": inputs.status ? inputs.status : null, "departureDate": inputs.departureDate ? inputs.departureDate : null }), headers: new Headers({ 'Content-Type': 'application/json' }) })
             .then(res => {
                 return res.json().then(data => {
                     if (res.ok) {
