@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../../styles/popup.css';
 
-const ClientUpdatePopup = ({ buttonState, client }) => {
+const ShipmentUpdatePopup = ({ buttonState, shipment }) => {
 
     const [inputs, setInputs] = useState({});
 
@@ -17,7 +17,7 @@ const ClientUpdatePopup = ({ buttonState, client }) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        fetch("/api/clients", { method: "PUT", body: JSON.stringify({ "email": client.email, "name": inputs.name ? inputs.name : null, "phoneNo": inputs.phoneNo ? inputs.phoneNo : null }), headers: new Headers({ 'Content-Type': 'application/json' }) })
+        fetch("/api/shipments", { method: "PUT", body: JSON.stringify({ "shipmentNo": shipment.shipment, "shipmentFee": inputs.shipmentFee ? inputs.shipmentFee : null, "status": inputs.status ? inputs.status : null, "departureDate": inputs.departureDate ? inputs.departureDate : null }), headers: new Headers({ 'Content-Type': 'application/json' }) })
             .then(res => {
                 return res.json().then(data => {
                     if (res.ok) {
@@ -42,25 +42,33 @@ const ClientUpdatePopup = ({ buttonState, client }) => {
                     <div className="popup-overlay" />
                     <div className="popup">
                         <button className="popup-close" onClick={handleClose}>X</button>
-                        <h1 className='header'>Edit client with email: {client.email}</h1>
+                        <h1 className='header'>Edit shipment with shipment number: {shipment.shipmentNo}</h1>
                         <form onSubmit={handleSubmit}>
-                            <label className="form-label">Name:
+                            <label className="form-label">Shipment Fee:
                                 <input
                                     className="form-input"
                                     type="text"
-                                    name="name"
+                                    name="shipmentFee"
                                     onChange={handleChange}
-                                    placeholder="Enter name"
+                                    placeholder="Enter shipment fee"
                                 />
                             </label>
-                            <label className="form-label">
-                                Phone Number:
+                            <label className="form-label">Status:
                                 <input
                                     className="form-input"
                                     type="text"
-                                    name="phoneNo"
+                                    name="status"
                                     onChange={handleChange}
-                                    placeholder="Enter phone number"
+                                    placeholder="Enter status"
+                                />
+                            </label>
+                            <label className="form-label">Departure Date:
+                                <input
+                                    className="form-input"
+                                    type="text"
+                                    name="departureDate"
+                                    onChange={handleChange}
+                                    placeholder="Enter departureDate"
                                 />
                             </label>
                             <button className="form-button" type="submit">Update</button>
@@ -72,4 +80,4 @@ const ClientUpdatePopup = ({ buttonState, client }) => {
     );
 };
 
-export default ClientUpdatePopup;
+export default ShipmentUpdatePopup;

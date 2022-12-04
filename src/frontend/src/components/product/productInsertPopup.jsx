@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../../styles/popup.css';
 
-const ClientUpdatePopup = ({ buttonState, client }) => {
+const ProductInsertPopup = ({ buttonState }) => {
 
     const [inputs, setInputs] = useState({});
 
@@ -17,7 +17,7 @@ const ClientUpdatePopup = ({ buttonState, client }) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        fetch("/api/clients", { method: "PUT", body: JSON.stringify({ "email": client.email, "name": inputs.name ? inputs.name : null, "phoneNo": inputs.phoneNo ? inputs.phoneNo : null }), headers: new Headers({ 'Content-Type': 'application/json' }) })
+        fetch("/api/products", { method: "POST", body: JSON.stringify({ "productName": inputs.productName ? inputs.productName : null, "price": inputs.price ? inputs.price : null, "weight": inputs.weight ? inputs.weight : null, "email": inputs.email ? inputs.email : null }), headers: new Headers({ 'Content-Type': 'application/json' }) })
             .then(res => {
                 return res.json().then(data => {
                     if (res.ok) {
@@ -42,28 +42,45 @@ const ClientUpdatePopup = ({ buttonState, client }) => {
                     <div className="popup-overlay" />
                     <div className="popup">
                         <button className="popup-close" onClick={handleClose}>X</button>
-                        <h1 className='header'>Edit client with email: {client.email}</h1>
+                        <h1 className='header'>Create Product Form</h1>
                         <form onSubmit={handleSubmit}>
-                            <label className="form-label">Name:
+                            <label className="form-label">Product Name:
                                 <input
                                     className="form-input"
                                     type="text"
-                                    name="name"
+                                    name="productName"
                                     onChange={handleChange}
-                                    placeholder="Enter name"
+                                    placeholder="Enter product name"
                                 />
                             </label>
-                            <label className="form-label">
-                                Phone Number:
+                            <label className="form-label">Price:
                                 <input
                                     className="form-input"
                                     type="text"
-                                    name="phoneNo"
+                                    name="price"
                                     onChange={handleChange}
-                                    placeholder="Enter phone number"
+                                    placeholder="Enter price"
                                 />
                             </label>
-                            <button className="form-button" type="submit">Update</button>
+                            <label className="form-label">Weight:
+                                <input
+                                    className="form-input"
+                                    type="text"
+                                    name="weight"
+                                    onChange={handleChange}
+                                    placeholder="Enter weight"
+                                />
+                            </label>
+                            <label className="form-label">Email:
+                                <input
+                                    className="form-input"
+                                    type="text"
+                                    name="email"
+                                    onChange={handleChange}
+                                    placeholder="Enter email"
+                                />
+                            </label>
+                            <button className="form-button" type="submit">Add</button>
                         </form>
                     </div>
                 </React.Fragment>
@@ -72,4 +89,4 @@ const ClientUpdatePopup = ({ buttonState, client }) => {
     );
 };
 
-export default ClientUpdatePopup;
+export default ProductInsertPopup;

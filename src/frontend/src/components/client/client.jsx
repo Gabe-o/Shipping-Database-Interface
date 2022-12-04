@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import ClientUpdatePopup from "./clientUpdatePopup";
-import ClientDeletePopup from "./deleteClientPopup";
+import ClientDeletePopup from "./clientDeletePopup";
 
 function Client(client) {
 

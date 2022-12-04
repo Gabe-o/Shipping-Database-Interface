@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../../styles/popup.css';
 
-const ClientInsertPopup = ({ buttonState }) => {
+const PortUpdatePopup = ({ buttonState, port }) => {
 
     const [inputs, setInputs] = useState({});
 
@@ -17,7 +17,7 @@ const ClientInsertPopup = ({ buttonState }) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        fetch("/api/clients", { method: "POST", body: JSON.stringify({ "email": inputs.email, "name": inputs.name ? inputs.name : null, "phoneNo": inputs.phoneNo ? inputs.phoneNo : null }), headers: new Headers({ 'Content-Type': 'application/json' }) })
+        fetch("/api/ports", { method: "PUT", body: JSON.stringify({ "portNo": port.portNo, "region": inputs.region ? inputs.region : null, "portName": inputs.portName ? inputs.portName : null, "country": inputs.country ? inputs.country : null, "latitude": inputs.latitude ? inputs.latitude : null, "longitude": inputs.longitude ? inputs.longitude : null }), headers: new Headers({ 'Content-Type': 'application/json' }) })
             .then(res => {
                 return res.json().then(data => {
                     if (res.ok) {
@@ -42,37 +42,54 @@ const ClientInsertPopup = ({ buttonState }) => {
                     <div className="popup-overlay" />
                     <div className="popup">
                         <button className="popup-close" onClick={handleClose}>X</button>
-                        <h1 className='header'>Create Client Form</h1>
+                        <h1 className='header'>Edit port with port number: {port.portNo}</h1>
                         <form onSubmit={handleSubmit}>
-                            <label className="form-label">Email:
+                            <label className="form-label">Region:
                                 <input
                                     className="form-input"
                                     type="text"
-                                    name="email"
+                                    name="region"
                                     onChange={handleChange}
-                                    placeholder="Enter email"
+                                    placeholder="Enter region"
                                 />
                             </label>
-                            <label className="form-label">Name:
+                            <label className="form-label">Port Name:
                                 <input
                                     className="form-input"
                                     type="text"
-                                    name="name"
+                                    name="portName"
                                     onChange={handleChange}
-                                    placeholder="Enter name"
+                                    placeholder="Enter port name"
                                 />
                             </label>
-                            <label className="form-label">
-                                Phone Number:
+                            <label className="form-label">Country:
                                 <input
                                     className="form-input"
                                     type="text"
-                                    name="phoneNo"
+                                    name="country"
                                     onChange={handleChange}
-                                    placeholder="Enter phone number"
+                                    placeholder="Enter coutry"
                                 />
                             </label>
-                            <button className="form-button" type="submit">Add</button>
+                            <label className="form-label">Latitude:
+                                <input
+                                    className="form-input"
+                                    type="text"
+                                    name="latitude"
+                                    onChange={handleChange}
+                                    placeholder="Enter latitude"
+                                />
+                            </label>
+                            <label className="form-label">Longitude:
+                                <input
+                                    className="form-input"
+                                    type="text"
+                                    name="longitude"
+                                    onChange={handleChange}
+                                    placeholder="Enter longitude"
+                                />
+                            </label>
+                            <button className="form-button" type="submit">Update</button>
                         </form>
                     </div>
                 </React.Fragment>
@@ -81,4 +98,4 @@ const ClientInsertPopup = ({ buttonState }) => {
     );
 };
 
-export default ClientInsertPopup;
+export default PortUpdatePopup;

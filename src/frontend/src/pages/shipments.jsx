@@ -1,35 +1,47 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
 import Shipment from '../components/shipment/shipment';
+import ShipmentInsertPopup from '../components/shipment/shipmentInsertPopup';
 
 function ShipmentsPage() {
 
     const [inputs, setInputs] = useState({});
     const [results, setResults] = useState([]);
+    const [buttonState, setButtonState] = useState(false);
 
     useEffect(() => {
         fetch("/api/shipments", { method: "GET", headers: new Headers({ 'Content-Type': 'application/json' }) })
-            .then(res => res.json())
-            .then(data => {
-                setResults(data);
-                console.log(data);
+            .then(res => {
+                return res.json().then(data => {
+                    if (res.ok) {
+                        setResults(data);
+                    }
+                    else {
+                        throw new Error(res.status + "\n" + JSON.stringify(data));
+                    }
+                })
             })
             .catch(err => {
-                console.log(err);
-            })
+                alert(err);
+            });
     }, []);
 
     const handleSubmit = (event) => {
         event.preventDefault();
 
         fetch("/api/shipments/primaryKey?shipmentID=" + inputs.shipmentID, { method: "GET", headers: new Headers({ 'Content-Type': 'application/json' }) })
-            .then(res => res.json())
-            .then(data => {
-                setResults(data);
-                console.log(data);
+            .then(res => {
+                return res.json().then(data => {
+                    if (res.ok) {
+                        setResults(data);
+                    }
+                    else {
+                        throw new Error(res.status + "\n" + JSON.stringify(data));
+                    }
+                })
             })
             .catch(err => {
-                console.log(err);
+                alert(err);
             });
     }
 
@@ -39,9 +51,14 @@ function ShipmentsPage() {
         setInputs(values => ({ ...values, [name]: value }))
     }
 
+    const insertShipmentButton = () => {
+        setButtonState(!buttonState);
+    }
+
     return (
         <React.Fragment>
             <h1>Shipments Page</h1>
+            <button onClick={insertShipmentButton}>Add Shipment</button>
             <form onSubmit={handleSubmit}>
                 <input type="text" name="shipmentID" onChange={handleChange} placeholder="Shipment ID" value={inputs.shipmentID || ""} />
             </form>
@@ -57,6 +74,7 @@ function ShipmentsPage() {
                     <th>Edit Table</th>
                 </tr>
                 {results.length !== 0 ? results.map((shipment, c) => <Shipment {...shipment} key={c} />) : null}
+                {buttonState ? <ShipmentInsertPopup buttonState={setButtonState} /> : null}
             </table>
         </React.Fragment>
     );

@@ -8,6 +8,10 @@
     padding: 20px;
 }
 
+.header {
+    color: black
+}
+
 .popup-overlay {
     position: fixed;
     top: 0;
@@ -28,10 +32,6 @@
     display: block;
     margin-bottom: 8px;
     color: black;
-}
-
-h1 {
-    color: black
 }
 
 .form-input {

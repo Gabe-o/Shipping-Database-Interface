@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../../styles/popup.css';
 
-const ClientInsertPopup = ({ buttonState }) => {
+const ShipmentDateInsertPopup = ({ buttonState }) => {
 
     const [inputs, setInputs] = useState({});
 
@@ -17,7 +17,7 @@ const ClientInsertPopup = ({ buttonState }) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        fetch("/api/clients", { method: "POST", body: JSON.stringify({ "email": inputs.email, "name": inputs.name ? inputs.name : null, "phoneNo": inputs.phoneNo ? inputs.phoneNo : null }), headers: new Headers({ 'Content-Type': 'application/json' }) })
+        fetch("/api/shipmentDates", { method: "POST", body: JSON.stringify({ "routeNo": inputs.routeNo ? inputs.routeNo : null, "departureDate": inputs.departureDate ? inputs.departureDate : null, "shipID": inputs.shipID ? inputs.shipID : null, "estArrivalDate": inputs.estArrivalDate ? inputs.estArrivalDate : null }), headers: new Headers({ 'Content-Type': 'application/json' }) })
             .then(res => {
                 return res.json().then(data => {
                     if (res.ok) {
@@ -42,34 +42,42 @@ const ClientInsertPopup = ({ buttonState }) => {
                     <div className="popup-overlay" />
                     <div className="popup">
                         <button className="popup-close" onClick={handleClose}>X</button>
-                        <h1 className='header'>Create Client Form</h1>
+                        <h1 className='header'>Create shipment date Form</h1>
                         <form onSubmit={handleSubmit}>
-                            <label className="form-label">Email:
+                            <label className="form-label">Route Number:
                                 <input
                                     className="form-input"
                                     type="text"
-                                    name="email"
+                                    name="routeNo"
                                     onChange={handleChange}
-                                    placeholder="Enter email"
+                                    placeholder="Enter route number"
                                 />
                             </label>
-                            <label className="form-label">Name:
+                            <label className="form-label">Departure Date:
                                 <input
                                     className="form-input"
                                     type="text"
-                                    name="name"
+                                    name="departureDate"
                                     onChange={handleChange}
-                                    placeholder="Enter name"
+                                    placeholder="Enter departure date"
                                 />
                             </label>
-                            <label className="form-label">
-                                Phone Number:
+                            <label className="form-label">Ship ID:
                                 <input
                                     className="form-input"
                                     type="text"
-                                    name="phoneNo"
+                                    name="shipID"
                                     onChange={handleChange}
-                                    placeholder="Enter phone number"
+                                    placeholder="Enter ship id"
+                                />
+                            </label>
+                            <label className="form-label">Estimated Arrival Date:
+                                <input
+                                    className="form-input"
+                                    type="text"
+                                    name="estArrivalDate"
+                                    onChange={handleChange}
+                                    placeholder="Enter estimated arrival date"
                                 />
                             </label>
                             <button className="form-button" type="submit">Add</button>
@@ -81,4 +89,4 @@ const ClientInsertPopup = ({ buttonState }) => {
     );
 };
 
-export default ClientInsertPopup;
+export default ShipmentDateInsertPopup;

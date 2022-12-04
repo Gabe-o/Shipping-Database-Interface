@@ -1,39 +1,56 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
 import Ship from '../components/ship/ship';
+import ShipInsertPopup from '../components/ship/shipInsertPopup';
 
 function ShipsPage() {
 
     const [inputs, setInputs] = useState({});
     const [results, setResults] = useState([]);
+    const [buttonState, setButtonState] = useState(false);
 
     useEffect(() => {
         fetch("/api/ships", { method: "GET", headers: new Headers({ 'Content-Type': 'application/json' }) })
-            .then(res => res.json())
-            .then(data => {
-                setResults(data);
-                console.log(data);
+            .then(res => {
+                return res.json().then(data => {
+                    if (res.ok) {
+                        setResults(data);
+                    }
+                    else {
+                        throw new Error(res.status + "\n" + JSON.stringify(data));
+                    }
+                })
             })
             .catch(err => {
-                console.log(err);
-            })
+                alert(err);
+            });
     }, []);
 
     const handleSubmit = (event) => {
         event.preventDefault();
 
         fetch("/api/ships/primaryKey?shipID=" + inputs.shipID, { method: "GET", headers: new Headers({ 'Content-Type': 'application/json' }) })
-            .then(res => res.json())
-            .then(data => {
-                setResults(data);
-                console.log(data);
+            .then(res => {
+                return res.json().then(data => {
+                    if (res.ok) {
+                        setResults(data);
+                    }
+                    else {
+                        throw new Error(res.status + "\n" + JSON.stringify(data));
+                    }
+                })
             })
             .catch(err => {
-                console.log(err);
+                alert(err);
             });
     }
 
+    const insertShipButton = () => {
+        setButtonState(!buttonState);
+    }
+
     const handleChange = (event) => {
+        <button onClick={insertShipButton}>Add Ship</button>
         const name = event.target.name;
         const value = event.target.value;
         setInputs(values => ({ ...values, [name]: value }))
@@ -58,6 +75,7 @@ function ShipsPage() {
                     <th>Edit Table</th>
                 </tr>
                 {results.length !== 0 ? results.map((ship, c) => <Ship {...ship} key={c} />) : null}
+                {buttonState ? <ShipInsertPopup buttonState={setButtonState} /> : null}
             </table>
         </React.Fragment>
     );
