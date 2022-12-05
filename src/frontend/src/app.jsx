@@ -10,6 +10,8 @@ import ShipmentDatesPage from "./pages/shipmentDates";
 import PortsPage from "./pages/ports";
 import RoutesPagePage from "./pages/routes";
 import ShipsPage from "./pages/ships";
+import AssignRoutes from "./pages/assignRoutes";
+import AssignShips from "./pages/assignShips";
 import './styles/app.css';
 
 function App() {
@@ -28,8 +30,8 @@ function App() {
                     <Route path="/routes" element={<RoutesPagePage />} />
                     <Route path="/ports" element={<PortsPage />} />
                     <Route path="/ships" element={<ShipsPage />} />
-                    <Route path="/assignRoutes" element={<assignRoutes />} />
-                    <Route path="/assignShips" element={<assignShips />} />
+                    <Route path="/assignRoutes" element={<AssignRoutes />} />
+                    <Route path="/assignShips" element={<AssignShips />} />
                 </Routes>
             </div>
         </BrowserRouter>
