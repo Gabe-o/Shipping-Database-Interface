@@ -113,14 +113,27 @@ complexRouter.post("/addShipToRoute/:routeNo", (req, res) => {
 
 // Remove a ship from a route
 complexRouter.post("/removeShipFromRoute/:routeNo", (req, res) => {
-    db.query(`UPDATE ships SET routeNo=null WHERE shipID=?`, [req.body.shipID], (err) => {
+    db.query(`SELECT shipmentNo FROM shipments WHERE status != 'Delivered' AND shipID=?;`, [req.body.shipID], (err, data) => {
         if (err) {
             res.status(500).json(`Error getting ship with ID ${req.body.shipID} data!`);
         }
+        else if (data.length !== 0) {
+            let shipmentNo = data.map(ship => ship.shipmentNo).toString();
+            res.status(400).json(`Couldn't remove Ship ${req.body.shipID} becuase it is assigned to shipmentNo: ${data.map(ship => ship.shipmentNo).toString()}`);
+        }
         else {
-            res.json(`Successfully added ship ${req.body.shipID} to route ${req.params.routeNo}!`)
+            db.query(`UPDATE ships SET routeNo=null WHERE shipID=?`, [req.body.shipID], (err) => {
+                if (err) {
+                    res.status(500).json(`Error getting ship with ID ${req.body.shipID} data!`);
+                }
+                else {
+                    res.json(`Successfully added ship ${req.body.shipID} to route ${req.params.routeNo}!`)
+                }
+            });
         }
     });
+
+
 });
 
 module.exports = complexRouter;
