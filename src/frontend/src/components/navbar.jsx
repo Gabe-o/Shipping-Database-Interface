@@ -46,8 +46,8 @@ function Navbar() {
         navigate("/assignShips", { replace: true });
     }
 
-    const assignRoutesButton = () => {
-        navigate("/assignRoutes", { replace: true });
+    const assignShipsToRoutesButton = () => {
+        navigate("/assignShipsToRoutes", { replace: true });
     }
 
     //returns button in nav bar
@@ -87,7 +87,7 @@ function Navbar() {
                             <button className="navBarB" onClick={assignShipsButton}>Assign Ships</button>
                         </li>
                         <li>
-                            <button className="navBarB" onClick={assignRoutesButton}>Assign Routes</button>
+                            <button className="navBarB" onClick={assignShipsToRoutesButton}>Assign Ships To Routes</button>
                         </li>
                     </ul>
                 </div>
