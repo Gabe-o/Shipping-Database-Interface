@@ -138,15 +138,34 @@ complexRouter.post("/removeShipFromRoute/:routeNo", (req, res) => {
 
 complexRouter.get("/shipWeight", (req, res) => {
 
-    db.query("SELECT ROUND(SUM(quantity*weight),2) AS shipmentWeight FROM products INNER JOIN productdetails ON products.productID = productdetails.productID WHERE productdetails.shipmentNo = ?;" , [req.query.shipmentNo], (err, data) => {
-       if(err){
-        console.log(err)
-       }
-       else{
-        res.status(200).json(data[0].shipmentWeight);
-        
-       }
+    db.query("SELECT ROUND(SUM(quantity*weight),2) AS shipmentWeight FROM products INNER JOIN productdetails ON products.productID = productdetails.productID WHERE productdetails.shipmentNo = ?;", [req.query.shipmentNo], (err, data) => {
+        if (err) {
+            console.log(err)
+        }
+        else {
+            res.status(200).json(data[0].shipmentWeight);
+
+        }
     });
 })
 
+complexRouter.post("/shipmentToShip", (req, res) => {
+
+    db.query("UPDATE shipments SET shipID=? WHERE shipmentNo=?", [req.body.shipID, req.body.shipmentNo], (err, data) => {
+        if (err) {
+            console.log(err)
+        }
+
+    });
+})
+
+complexRouter.post("/shipmentToShipDelete", (req, res) => {
+
+    db.query("UPDATE shipments SET shipID=NULL WHERE shipmentNo=?", [req.body.shipmentNo], (err, data) => {
+        if (err) {
+            console.log(err)
+        }
+
+    });
+})
 module.exports = complexRouter;
