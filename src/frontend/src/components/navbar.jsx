@@ -50,6 +50,10 @@ function Navbar() {
         navigate("/assignRoutes", { replace: true });
     }
 
+    const generateInvoiceButton = () => {
+        navigate("/generateInvoice", { replace: true });
+    }
+
     //returns button in nav bar
     return (
         <React.Fragment>
@@ -88,6 +92,9 @@ function Navbar() {
                         </li>
                         <li>
                             <button className="navBarB" onClick={assignRoutesButton}>Assign Routes</button>
+                        </li>
+                        <li>
+                            <button className="navBarB" onClick={generateInvoiceButton}>Generate Invoice</button>
                         </li>
                     </ul>
                 </div>

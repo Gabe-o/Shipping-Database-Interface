@@ -77,6 +77,22 @@ complexRouter.get("/shipsCanDoRoute/:routeNo", (req, res) => {
             res.status(200).json(data);
         }
     });
-})
+});
+
+complexRouter.get("/invoice", (req, res) => {
+
+    console.log(req.query.email);
+
+    db.query("SELECT shipmentProducts.shipmentNo, shipmentProducts.shipmentFee, shipmentProducts.productID, products.productName, products.weight, shipmentProducts.quantity, shipmentProducts.email, shipmentProducts.routeNo FROM (SELECT shipments.shipmentNo, productDetails.productID, shipments.shipmentFee, productDetails.quantity, shipments.email, shipments.routeNo FROM shipments JOIN productdetails ON shipments.shipmentNo = productdetails.shipmentNo WHERE email=?) AS shipmentProducts JOIN products ON shipmentProducts.productID=products.productID;", [req.query.email], (err, data) => {
+
+        if (err != null) {
+            res.status(500).json("Error generating invoice!")
+        }
+        else {
+            res.status(200).json(data);
+        }
+
+    })
+});
 
 module.exports = complexRouter;

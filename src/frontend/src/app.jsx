@@ -13,6 +13,7 @@ import ShipsPage from "./pages/ships";
 import AssignRoutes from "./pages/assignRoutes";
 import AssignShips from "./pages/assignShips";
 import './styles/app.css';
+import GenerateInvoice from "./pages/generateInvoice";
 
 function App() {
     return (
@@ -32,6 +33,7 @@ function App() {
                     <Route path="/ships" element={<ShipsPage />} />
                     <Route path="/assignRoutes" element={<AssignRoutes />} />
                     <Route path="/assignShips" element={<AssignShips />} />
+                    <Route path="/generateInvoice" element={<GenerateInvoice />} />
                 </Routes>
             </div>
         </BrowserRouter>
