@@ -193,6 +193,7 @@ function AssignShipsToRoutes() {
                             throw new Error(httpResp.status + "\n" + JSON.stringify(data));
                         }
                         else {
+                            data.sort((a, b) => a.maxRange - b.maxRange);
                             setAvailableShips(data);
                         }
                     })
