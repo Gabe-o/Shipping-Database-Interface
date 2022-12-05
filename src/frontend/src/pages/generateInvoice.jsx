@@ -45,7 +45,6 @@ function GenerateInvoice() {
     }
 
     const handleChange = (event) => {
-
         const name = event.target.name;
         const value = event.target.value;
         setInputs(values => ({ ...values, [name]: value }))
@@ -62,6 +61,7 @@ function GenerateInvoice() {
                     <th>Email</th>
                     <th>Name</th>
                     <th>Phone Number</th>
+                    <th>Number of shipments</th>
                     <th>Create Invoice</th>
                 </tr>
                 {results.length !== 0 ? results.map((client, c) => <ClientInvoice {...client} key={c} />) : null}
