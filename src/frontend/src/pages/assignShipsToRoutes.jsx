@@ -1,6 +1,6 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
-import '../styles/assignRoutes.css';
+import '../styles/assignShipsToRoutes.css';
 
 // Component for rendering a route with extra information
 function RouteDetail({ routeNo, startingPortNo, endingPortNo, distance, numShipments, currentWeight, cargoCapacity, numShips, setSelectedRoute }) {
@@ -113,7 +113,7 @@ function UnassignedShip({ shipID, shipName, maxCargoWeight, captain, routeNo, ho
 }
 
 
-function AssignRoutes() {
+function AssignShipsToRoutes() {
 
     const [routes, setRoutes] = useState([]);
     const [selectedRoute, setSelectedRoute] = useState(null);
@@ -480,4 +480,4 @@ function AssignRoutes() {
     );
 }
 
-export default AssignRoutes;
+export default AssignShipsToRoutes;
