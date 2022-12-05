@@ -26,7 +26,7 @@ complexRouter.get("/routeDetails", (req, res) => {
         COUNT(shipments.shipmentNo) AS numShipments 
         FROM shipments
         INNER JOIN productdetails
-        ON shipments.shipmentNo=productdetails.shipmentNo
+        ON (shipments.shipmentNo=productdetails.shipmentNo AND shipments.status!='Delivered')
         INNER JOIN products
         ON productdetails.productID=products.productID
         INNER JOIN routes
@@ -77,7 +77,64 @@ complexRouter.get("/shipsCanDoRoute/:routeNo", (req, res) => {
             res.status(200).json(data);
         }
     });
-})
+});
+
+// Add a ship to a route
+complexRouter.post("/addShipToRoute/:routeNo", (req, res) => {
+    // Check the routeNo of the ship
+    db.query(`SELECT routeNo FROM ships WHERE shipID=?;`, [req.body.shipID], (err, data) => {
+        if (err) {
+            res.status(500).json(`Error getting ship with ID ${req.body.shipID} data!`);
+        }
+        else if (data.length === 0) {
+            res.status(404).json(`Ships with ID ${req.body.shipID} has no data!`);
+        }
+        // If the ships is already assigned to that route
+        else if (data[0].routeNo === parseInt(req.params.routeNo)) {
+            res.json(`Ship ${req.body.shipID} is already assigned to route ${routeNo}`);
+        }
+        // If the ship is assigned to no route
+        else if (!data[0].routeNo) {
+            db.query(`UPDATE ships SET routeNo=? WHERE shipID=?`, [req.params.routeNo, req.body.shipID], (err, data) => {
+                if (err) {
+                    res.status(500).json(`Error setting ship with ID ${req.body.shipID} to route ${req.params.routeNo}!`);
+                }
+                else {
+                    res.json(`Successfully added ship ${req.body.shipID} to route ${req.params.routeNo}!`)
+                }
+            });
+        }
+        // If the ship is assigned to a route already
+        else {
+            res.status(400).json(`Ship ${req.body.shipID} is already assigned to route ${data[0].routeNo}`);
+        }
+    });
+});
+
+// Remove a ship from a route
+complexRouter.post("/removeShipFromRoute/:routeNo", (req, res) => {
+    db.query(`SELECT shipmentNo FROM shipments WHERE status != 'Delivered' AND shipID=?;`, [req.body.shipID], (err, data) => {
+        if (err) {
+            res.status(500).json(`Error getting ship with ID ${req.body.shipID} data!`);
+        }
+        else if (data.length !== 0) {
+            let shipmentNo = data.map(ship => ship.shipmentNo).toString();
+            res.status(400).json(`Couldn't remove Ship ${req.body.shipID} becuase it is assigned to shipmentNo: ${data.map(ship => ship.shipmentNo).toString()}`);
+        }
+        else {
+            db.query(`UPDATE ships SET routeNo=null WHERE shipID=?`, [req.body.shipID], (err) => {
+                if (err) {
+                    res.status(500).json(`Error getting ship with ID ${req.body.shipID} data!`);
+                }
+                else {
+                    res.json(`Successfully added ship ${req.body.shipID} to route ${req.params.routeNo}!`)
+                }
+            });
+        }
+    });
+
+
+});
 
 complexRouter.get("/shipWeight", (req, res) => {
 
