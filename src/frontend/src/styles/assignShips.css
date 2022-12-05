@@ -1,0 +1,10 @@
+div.tables {
+    float: 'left';
+    width: 50%;
+    
+
+}
+
+div.tableDistance{
+    display:flex;
+}
