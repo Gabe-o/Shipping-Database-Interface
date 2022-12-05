@@ -162,14 +162,14 @@ function AssignShipsToRoutes() {
             })
                 .then(httpResp => {
                     return httpResp.json().then(data => {
-                        if (!httpResp.ok) {
+                        if (httpResp.status === 404) {
+                            setAssignedShips([]);
+                        }
+                        else if (!httpResp.ok) {
                             throw new Error(httpResp.status + "\n" + JSON.stringify(data));
                         }
                         else {
                             setAssignedShips(data);
-                        }
-                        if (httpResp.status === 404) {
-                            setAssignedShips([]);
                         }
                     })
                 })
@@ -186,14 +186,15 @@ function AssignShipsToRoutes() {
             })
                 .then(httpResp => {
                     return httpResp.json().then(data => {
-                        if (!httpResp.ok) {
+                        if (httpResp.status === 404) {
+                            setAvailableShips([]);
+                        }
+                        else if (!httpResp.ok) {
                             throw new Error(httpResp.status + "\n" + JSON.stringify(data));
                         }
                         else {
+                            data.sort((a, b) => a.maxRange - b.maxRange);
                             setAvailableShips(data);
-                        }
-                        if (httpResp.status === 404) {
-                            setAvailableShips([]);
                         }
                     })
                 })
@@ -222,7 +223,10 @@ function AssignShipsToRoutes() {
         })
             .then(httpResp => {
                 return httpResp.json().then(data => {
-                    if (!httpResp.ok) {
+                    if (httpResp.status === 404) {
+                        currentlyAvailableShipIDs = data;
+                    }
+                    else if (!httpResp.ok) {
                         throw new Error(httpResp.status + "\n" + JSON.stringify(data));
                     }
                     else {
@@ -248,7 +252,10 @@ function AssignShipsToRoutes() {
         })
             .then(httpResp => {
                 return httpResp.json().then(data => {
-                    if (!httpResp.ok) {
+                    if (httpResp.status === 404) {
+                        currentlyAssignedShipIDs = data;
+                    }
+                    else if (!httpResp.ok) {
                         throw new Error(httpResp.status + "\n" + JSON.stringify(data));
                     }
                     else {
