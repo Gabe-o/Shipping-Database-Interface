@@ -1,6 +1,6 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
-import '../styles/assignRoutes.css';
+import '../styles/assignShipsToRoutes.css';
 
 // Component for rendering a route with extra information
 function RouteDetail({ routeNo, startingPortNo, endingPortNo, distance, numShipments, currentWeight, cargoCapacity, numShips, setSelectedRoute }) {
@@ -113,13 +113,13 @@ function UnassignedShip({ shipID, shipName, maxCargoWeight, captain, routeNo, ho
 }
 
 
-function AssignRoutes() {
+function AssignShipsToRoutes() {
 
     const [routes, setRoutes] = useState([]);
     const [selectedRoute, setSelectedRoute] = useState(null);
-    const [selectedRoutePending, setSelectedRoutePending] = useState(null); // For updating the route info during ship assignment without forcing a state change
     const [assignedShips, setAssignedShips] = useState([]);
     const [availableShips, setAvailableShips] = useState([]);
+    const [selectedRoutePending, setSelectedRoutePending] = useState(null); // For updating the route info during ship assignment without forcing a state change
 
     // Runs when a route is selected or unselected
     useEffect(() => {
@@ -162,14 +162,14 @@ function AssignRoutes() {
             })
                 .then(httpResp => {
                     return httpResp.json().then(data => {
-                        if (!httpResp.ok) {
+                        if (httpResp.status === 404) {
+                            setAssignedShips([]);
+                        }
+                        else if (!httpResp.ok) {
                             throw new Error(httpResp.status + "\n" + JSON.stringify(data));
                         }
                         else {
                             setAssignedShips(data);
-                        }
-                        if (httpResp.status === 404) {
-                            setAssignedShips([]);
                         }
                     })
                 })
@@ -186,14 +186,15 @@ function AssignRoutes() {
             })
                 .then(httpResp => {
                     return httpResp.json().then(data => {
-                        if (!httpResp.ok) {
+                        if (httpResp.status === 404) {
+                            setAvailableShips([]);
+                        }
+                        else if (!httpResp.ok) {
                             throw new Error(httpResp.status + "\n" + JSON.stringify(data));
                         }
                         else {
+                            data.sort((a, b) => a.maxRange - b.maxRange);
                             setAvailableShips(data);
-                        }
-                        if (httpResp.status === 404) {
-                            setAvailableShips([]);
                         }
                     })
                 })
@@ -211,10 +212,119 @@ function AssignRoutes() {
         setAvailableShips([]);
     }
 
+    const saveShipAssignment = async () => {
+        let currentlyAvailableShipIDs = []
+        // Gets ships that can complete the selected route
+        await fetch("/api/complex/shipsCanDoRoute/" + selectedRoute.routeNo, {
+            method: "GET",
+            headers: new Headers({
+                'Content-Type': 'application/json'
+            })
+        })
+            .then(httpResp => {
+                return httpResp.json().then(data => {
+                    if (httpResp.status === 404) {
+                        currentlyAvailableShipIDs = data;
+                    }
+                    else if (!httpResp.ok) {
+                        throw new Error(httpResp.status + "\n" + JSON.stringify(data));
+                    }
+                    else {
+                        currentlyAvailableShipIDs = data.map(ship => ship.shipID);
+                    }
+                })
+            })
+            .catch(err => {
+                alert(err);
+            });
+        let newlyAvailableShipIDs = availableShips.map(ship => ship.shipID);
+
+        // Removing ships that are already assigned
+        newlyAvailableShipIDs = newlyAvailableShipIDs.filter(ship => !currentlyAvailableShipIDs.includes(ship));
+
+        // Gets ship ids for the selected route
+        let currentlyAssignedShipIDs = [];
+        await fetch("/api/complex/shipsOnRoute/" + selectedRoute.routeNo, {
+            method: "GET",
+            headers: new Headers({
+                'Content-Type': 'application/json'
+            })
+        })
+            .then(httpResp => {
+                return httpResp.json().then(data => {
+                    if (httpResp.status === 404) {
+                        currentlyAssignedShipIDs = data;
+                    }
+                    else if (!httpResp.ok) {
+                        throw new Error(httpResp.status + "\n" + JSON.stringify(data));
+                    }
+                    else {
+                        currentlyAssignedShipIDs = data.map(ship => ship.shipID);
+                    }
+                })
+            })
+            .catch(err => {
+                alert(err);
+            });
+        let newlyAssignedShipIDs = assignedShips.map(ship => ship.shipID);
+
+        // Removing ships that are already assigned
+        newlyAssignedShipIDs = newlyAssignedShipIDs.filter(ship => !currentlyAssignedShipIDs.includes(ship));
+        // Adding ships to route
+        for (let shipID of newlyAssignedShipIDs) {
+            await fetch("/api/complex/addShipToRoute/" + selectedRoute.routeNo, {
+                method: "POST",
+                body: JSON.stringify({
+                    shipID: shipID
+                }),
+                headers: new Headers({
+                    'Content-Type': 'application/json'
+                })
+            })
+                .then(httpResp => {
+                    return httpResp.json().then(data => {
+                        if (!httpResp.ok) {
+                            throw new Error(httpResp.status + "\n" + JSON.stringify(data));
+                        }
+
+                    })
+                })
+                .catch(err => {
+                    alert(err);
+                });
+        }
+
+        // Removing ships to route
+        for (let shipID of newlyAvailableShipIDs) {
+            await fetch("/api/complex/removeShipFromRoute/" + selectedRoute.routeNo, {
+                method: "POST",
+                body: JSON.stringify({
+                    shipID: shipID
+                }),
+                headers: new Headers({
+                    'Content-Type': 'application/json'
+                })
+            })
+                .then(httpResp => {
+                    return httpResp.json().then(data => {
+                        if (!httpResp.ok) {
+                            throw new Error(httpResp.status + "\n" + JSON.stringify(data));
+                        }
+                    })
+                })
+                .catch(err => {
+                    alert(err);
+                });
+        }
+
+        resetSelectedRoute();
+    }
+
     // Menu for selecting routes
     const renderRouteSelect = () => {
         return (
             <>
+                <h1>Select A Route</h1>
                 <table>
                     <thead>
                         <tr>
@@ -254,6 +364,9 @@ function AssignRoutes() {
     const renderShipAssignment = () => {
         return (
             <>
+                <button onClick={resetSelectedRoute}>BACK</button>
+                <button onClick={saveShipAssignment}>SAVE</button>
+                <h1>Selected Route</h1>
                 <table>
                     <thead>
                         <tr>
@@ -367,7 +480,6 @@ function AssignRoutes() {
 
     return (
         <>
-            <button onClick={resetSelectedRoute}>Back</button>
             {
                 selectedRoutePending ? renderShipAssignment() : renderRouteSelect()
             }
@@ -375,4 +487,4 @@ function AssignRoutes() {
     );
 }
 
-export default AssignRoutes;
+export default AssignShipsToRoutes;

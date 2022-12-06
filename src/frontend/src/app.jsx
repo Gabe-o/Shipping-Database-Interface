@@ -10,7 +10,7 @@ import ShipmentDatesPage from "./pages/shipmentDates";
 import PortsPage from "./pages/ports";
 import RoutesPagePage from "./pages/routes";
 import ShipsPage from "./pages/ships";
-import AssignRoutes from "./pages/assignRoutes";
+import AssignShipsToRoutes from "./pages/assignShipsToRoutes";
 import AssignShips from "./pages/assignShips";
 import './styles/app.css';
 import GenerateInvoice from "./pages/generateInvoice";
@@ -32,7 +32,7 @@ function App() {
                     <Route path="/routes" element={<RoutesPagePage />} />
                     <Route path="/ports" element={<PortsPage />} />
                     <Route path="/ships" element={<ShipsPage />} />
-                    <Route path="/assignRoutes" element={<AssignRoutes />} />
+                    <Route path="/assignShipsToRoutes" element={<AssignShipsToRoutes />} />
                     <Route path="/assignShips" element={<AssignShips />} />
                     <Route path="/generateInvoice" element={<GenerateInvoice />} />
                     <Route path="/popularPorts" element={<PopularPorts />} />

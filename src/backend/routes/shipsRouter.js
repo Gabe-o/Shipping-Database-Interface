@@ -67,4 +67,15 @@ shipsRouter.get("/primaryKey", (req, res) => {
     });
 });
 
+shipsRouter.get("/shipMaxWeight", (req, res) => {
+    db.query("SELECT maxCargoWeight, shipID FROM ships;", (err, data) => {
+        if(err){
+            console.log(err)
+        }
+        else{
+            res.status(200).json(data);
+        }
+    })
+})
+
 module.exports = shipsRouter;

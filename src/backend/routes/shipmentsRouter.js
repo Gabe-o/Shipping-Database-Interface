@@ -68,4 +68,16 @@ shipmentsRouter.get("/primaryKey", (req, res) => {
     });
 });
 
+shipmentsRouter.get("/shipmentNumber", (req, res) => {
+    db.query("SELECT shipmentNo FROM se3309_assignment4_database.shipments;", (err, data) => {
+        if(err){
+            console.log(error);
+        }
+        else{
+            res.status(200).json(data);
+        }
+        
+    });
+});
+
 module.exports = shipmentsRouter;
