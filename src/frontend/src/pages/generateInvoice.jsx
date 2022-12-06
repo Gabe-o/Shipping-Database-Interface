@@ -1,9 +1,9 @@
-import React from 'react';
+import React from "react";
 import { useEffect, useState } from 'react';
-import Client from '../components/client/client';
-import ClientInsertPopup from '../components/client/clientInsertPopup';
+import ClientInvoice from "../components/client/clientInvoice";
 
-function ClientsPage() {
+function GenerateInvoice() {
+
 
     const [inputs, setInputs] = useState({});
     const [results, setResults] = useState([]);
@@ -50,15 +50,9 @@ function ClientsPage() {
         setInputs(values => ({ ...values, [name]: value }))
     }
 
-    const insertClientButton = () => {
-        setButtonState(!buttonState);
-    }
-
-
     return (
         <React.Fragment>
-            <h1>Client's Page</h1>
-            <button onClick={insertClientButton}>Add Client</button>
+            <h1>Generate Invoice for Client's</h1>
             <form onSubmit={handleSubmit}>
                 <input type="text" name="email" onChange={handleChange} placeholder="Email" value={inputs.email || ""} />
             </form>
@@ -67,13 +61,13 @@ function ClientsPage() {
                     <th>Email</th>
                     <th>Name</th>
                     <th>Phone Number</th>
-                    <th>Edit Rows</th>
+                    <th>Number of shipments</th>
+                    <th>Create Invoice</th>
                 </tr>
-                {results.length !== 0 ? results.map((client, c) => <Client {...client} key={c} />) : null}
-                {buttonState ? <ClientInsertPopup buttonState={setButtonState} /> : null}
+                {results.length !== 0 ? results.map((client, c) => <ClientInvoice {...client} key={c} />) : null}
             </table>
         </React.Fragment>
     );
 }
 
-export default ClientsPage;
+export default GenerateInvoice;
