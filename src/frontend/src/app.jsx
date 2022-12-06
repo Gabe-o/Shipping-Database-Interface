@@ -14,6 +14,7 @@ import AssignRoutes from "./pages/assignRoutes";
 import AssignShips from "./pages/assignShips";
 import './styles/app.css';
 import GenerateInvoice from "./pages/generateInvoice";
+import PopularPorts from "./pages/popularPorts";
 
 function App() {
     return (
@@ -34,6 +35,7 @@ function App() {
                     <Route path="/assignRoutes" element={<AssignRoutes />} />
                     <Route path="/assignShips" element={<AssignShips />} />
                     <Route path="/generateInvoice" element={<GenerateInvoice />} />
+                    <Route path="/popularPorts" element={<PopularPorts />} />
                 </Routes>
             </div>
         </BrowserRouter>

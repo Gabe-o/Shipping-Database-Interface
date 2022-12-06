@@ -54,6 +54,10 @@ function Navbar() {
         navigate("/generateInvoice", { replace: true });
     }
 
+    const popularPortsButton = () => {
+        navigate("/popularPorts", { replace: true });
+    }
+
     //returns button in nav bar
     return (
         <React.Fragment>
@@ -95,6 +99,9 @@ function Navbar() {
                         </li>
                         <li>
                             <button className="navBarB" onClick={generateInvoiceButton}>Generate Invoice</button>
+                        </li>
+                        <li>
+                            <button className="navBarB" onClick={popularPortsButton}>Most used Ports</button>
                         </li>
                     </ul>
                 </div>

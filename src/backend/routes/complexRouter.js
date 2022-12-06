@@ -81,8 +81,6 @@ complexRouter.get("/shipsCanDoRoute/:routeNo", (req, res) => {
 
 complexRouter.get("/invoice", (req, res) => {
 
-    console.log(req.query.email);
-
     db.query("SELECT shipmentProducts.shipmentNo, shipmentProducts.shipmentFee, shipmentProducts.productID, products.productName, products.weight, shipmentProducts.quantity, shipmentProducts.email, shipmentProducts.routeNo FROM (SELECT shipments.shipmentNo, productDetails.productID, shipments.shipmentFee, productDetails.quantity, shipments.email, shipments.routeNo FROM shipments JOIN productdetails ON shipments.shipmentNo = productdetails.shipmentNo WHERE email=?) AS shipmentProducts JOIN products ON shipmentProducts.productID=products.productID;", [req.query.email], (err, data) => {
 
         if (err != null) {
@@ -93,6 +91,48 @@ complexRouter.get("/invoice", (req, res) => {
         }
 
     })
+});
+
+complexRouter.get("/mostCommonStartingPort", (req, res) => {
+
+    db.query("SELECT portRoutes.portNo FROM (SELECT usedStartingPorts.portNo, usedStartingPorts.country, usedStartingPorts.portName, usedStartingPorts.region, usedStartingPorts.routeNo, shipments.shipmentNo FROM (SELECT ports.portNo, ports.region, ports.portName, ports.country, routes.routeNo FROM ports JOIN routes ON ports.portNo = routes.startingPortNo WHERE ports.country=?) AS usedStartingPorts JOIN shipments ON usedStartingPorts.routeNo=shipments.routeNo) AS portRoutes GROUP BY portRoutes.portNo ORDER BY COUNT(*) DESC LIMIT 1;", [req.query.country], (err, data) => {
+
+        if (err != null) {
+            res.status(500).json("Error getting most popular starting port in " + req.query.country);
+        }
+        else {
+            console.log(data);
+            db.query("SELECT * FROM ports WHERE portNo=?;", [data[0].portNo], (err2, data2) => {
+                if (err2 != null) {
+                    res.status(500).json("Error getting most popular starting port in " + req.query.country);
+                }
+                else {
+                    res.status(200).json(data2);
+                }
+            });
+        }
+    });
+});
+
+complexRouter.get("/mostCommonEndingPort", (req, res) => {
+
+    db.query("SELECT portRoutes.portNo FROM(SELECT usedEndingPorts.portNo, usedEndingPorts.country, usedEndingPorts.portName, usedEndingPorts.region, usedEndingPorts.routeNo, shipments.shipmentNo FROM(SELECT ports.portNo, ports.region, ports.portName, ports.country, routes.routeNo FROM ports JOIN routes ON ports.portNo = routes.endingPortNo WHERE ports.country=?) AS usedEndingPorts JOIN shipments ON usedEndingPorts.routeNo = shipments.routeNo) AS portRoutes GROUP BY portRoutes.portNo ORDER BY COUNT(*) DESC LIMIT 1;", [req.query.country], (err, data) => {
+
+        if (err != null) {
+            res.status(500).json("Error getting most popular ending port in " + req.query.country);
+        }
+        else {
+            console.log(data);
+            db.query("SELECT * FROM ports WHERE portNo=?;", [data[0].portNo], (err2, data2) => {
+                if (err2 != null) {
+                    res.status(500).json("Error getting most popular ending port in " + req.query.country);
+                }
+                else {
+                    res.status(200).json(data2);
+                }
+            });
+        }
+    });
 });
 
 module.exports = complexRouter;
