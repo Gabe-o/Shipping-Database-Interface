@@ -207,7 +207,39 @@ complexRouter.get("/shipWeight", (req, res) => {
         }
 
     });
-})
+});
+
+complexRouter.post("/shipment", (req, res) => {
+
+    db.query("INSERT INTO shipments (routeNo, shipmentFee, status, email) VALUES (?, ?, ?, ?);", [req.body.routeNo, "0", "Pending", req.body.email], async (err, data) => {
+        if (err != null) {
+
+            res.status(500).json("Error creating shipment!");
+        }
+        else {
+            for (let c = 0; c < Object.keys(req.body.products).length; c++) {
+
+                if (Object.values(req.body.products)[c] > 0) {
+                    db.query("INSERT INTO productdetails VALUES (?,?,?);", [data.insertId, Object.keys(req.body.products)[c], Object.values(req.body.products)[c]], (err) => {
+                        if (err != null) {
+                            res.status(500).json("Error creating shipment");
+                            return;
+                        }
+                    });
+                }
+            }
+
+            db.query("UPDATE shipments SET shipmentFee = (SELECT ROUND(SUM(quantity * weight) * 0.05, 2) AS shipmentFee FROM products INNER JOIN productdetails ON products.productID = productdetails.productID WHERE productdetails.shipmentNo = ?) WHERE shipments.shipmentNo = ?; ", [data.insertId, data.insertId], (err) => {
+                if (err != null) {
+                    res.status(500).json("Error creating shipment!");
+                }
+                else {
+                    res.status(200).json("Succesfully created shipment!");
+                }
+            });
+        }
+    });
+});
 
 function calculateArrivalDate(distance, departureDate, speed) {
     departureDate = moment(departureDate);
