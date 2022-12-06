@@ -1,5 +1,7 @@
 const express = require('express');
 const db = require('../DBConnect.js');
+const moment = require('moment');
+moment().format('YYYY-MM-DD HH:mm:ss');
 
 const complexRouter = express.Router();
 
@@ -140,7 +142,7 @@ complexRouter.get("/shipWeight", (req, res) => {
 
     db.query("SELECT ROUND(SUM(quantity*weight),2) AS shipmentWeight FROM products INNER JOIN productdetails ON products.productID = productdetails.productID WHERE productdetails.shipmentNo = ?;", [req.query.shipmentNo], (err, data) => {
         if (err) {
-            console.log(err)
+            res.status(500).json(err);
         }
         else {
             res.status(200).json(data[0].shipmentWeight);
@@ -149,23 +151,97 @@ complexRouter.get("/shipWeight", (req, res) => {
     });
 })
 
+function calculateArrivalDate(distance, departureDate, speed) {
+    departureDate = moment(departureDate);
+    let travelTime = parseFloat(distance) / parseFloat(speed)
+    return departureDate.add(travelTime, 'h').format();
+}
+
+function calculateDistance(startLat, startLon, endLat, endLon) {
+    const latitude = (startLat - endLat) * 110.574;
+    const longitude = Math.abs(parseFloat(startLon) - parseFloat(endLon)) * (111.320 * Math.cos(latitude));
+    const totalDistance = Math.round(Math.sqrt(Math.pow(latitude, 2) + Math.pow(longitude, 2)));
+    return totalDistance;
+}
+
 complexRouter.post("/shipmentToShip", (req, res) => {
 
+    // Adding ship to a route
     db.query("UPDATE shipments SET shipID=? WHERE shipmentNo=?", [req.body.shipID, req.body.shipmentNo], (err, data) => {
         if (err) {
-            console.log(err)
+            res.status(500).json(err);
         }
+        else {
+            // Updating departure date based on assigned ship
+            // Getting all required data
+            db.query(`SELECT c.shipmentNo,c.routeNo,c.startingPortNo,c.startLat,c.startLon,c.endingPortNo,c.endLat,c.endLon,c.shipID,c.homePortNo,ports.latitude AS homeLat,ports.longitude AS homeLon,c.speed FROM
+                (SELECT b.shipmentNo,b.routeNo,b.startingPortNo,b.startLat,b.startLon,b.endingPortNo,ports.latitude AS endLat,ports.longitude AS endLon,b.shipID,b.homePortNo,b.speed FROM
+                (SELECT a.shipmentNo,a.routeNo,a.startingPortNo,ports.latitude AS startLat,ports.longitude AS startLon,a.endingPortNo,a.shipID,a.homePortNo,a.speed FROM
+                (SELECT shipments.shipmentNo,shipments.routeNo,routes.startingPortNo,routes.endingPortNo,ships.shipID,ships.homePortNo,ships.speed 
+                FROM shipments
+                JOIN routes ON routes.routeNo=shipments.routeNo
+                JOIN ships ON ships.shipID=shipments.shipID
+                WHERE ships.shipID=? AND shipments.shipmentNo=?) AS a
+                JOIN ports ON a.startingPortNo=ports.portNo) AS b
+                JOIN ports ON b.endingPortNo=ports.portNo) AS c
+                JOIN ports ON c.homePortNo=ports.portNo;`, [req.body.shipID, req.body.shipmentNo],
+                (err, data) => {
+                    if (err) {
+                        res.status(500).json(err);
+                    }
+                    // Calculating dates and distances
+                    let distToStart = calculateDistance(data[0].homeLat, data[0].homeLon, data[0].startLat, data[0].startLon);
+                    let departureDate = calculateArrivalDate(distToStart, moment().format(), data[0].speed);
+                    let routeDist = calculateDistance(data[0].startLat, data[0].startLon, data[0].endLat, data[0].endLon);
+                    let estArrivalDate = calculateArrivalDate(routeDist, departureDate, data[0].speed);
 
+                    // Updating shipments
+                    db.query(`UPDATE shipments SET departureDate=? WHERE shipmentNo=?`, [departureDate, req.body.shipmentNo], (err) => {
+                        if (err) {
+                            res.status(500).json(err);
+                        }
+                        else {
+                            // Adding Shipment date
+                            db.query(`INSERT INTO shipmentdates VALUES (?,?,?,?);`, [data[0].routeNo, departureDate, req.body.shipID, estArrivalDate], (err) => {
+                                if (err) {
+                                    res.status(500).json(err);
+                                }
+                                else {
+                                    res.status(200);
+                                }
+                            });
+                        }
+                    });
+                });
+        }
     });
 })
 
 complexRouter.post("/shipmentToShipDelete", (req, res) => {
-
-    db.query("UPDATE shipments SET shipID=NULL WHERE shipmentNo=?", [req.body.shipmentNo], (err, data) => {
+    db.query(`SELECT * FROM shipments WHERE shipmentNo=?`, [req.body.shipmentNo], (err, data) => {
         if (err) {
             console.log(err)
         }
-
+        else {
+            db.query("UPDATE shipments SET departureDate=NULL, shipID=NULL WHERE shipmentNo=?", [req.body.shipmentNo], (err) => {
+                if (err) {
+                    console.log(err)
+                }
+                else {
+                    db.query(`DELETE FROM shipmentdates WHERE routeNo=? AND departureDate=? AND shipID=?`, [data[0].routeNo, data[0].departureDate, data[0].shipID], (err) => {
+                        if (err) {
+                            console.log(err)
+                        }
+                        else {
+                            res.status(200);
+                        }
+                    });
+                }
+            });
+        }
     });
 })
+
+
+
 module.exports = complexRouter;
