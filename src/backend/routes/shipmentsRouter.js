@@ -69,7 +69,7 @@ shipmentsRouter.get("/primaryKey", (req, res) => {
 });
 
 shipmentsRouter.get("/shipmentNumber", (req, res) => {
-    db.query("SELECT shipmentNo FROM se3309_assignment4_database.shipments;", (err, data) => {
+    db.query("SELECT shipmentNo, routeNo, shipID, ROUND((shipmentFee/0.05), 2) AS weight FROM se3309_assignment4_database.shipments;", (err, data) => {
         if(err){
             console.log(error);
         }
