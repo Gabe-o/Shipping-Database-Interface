@@ -62,7 +62,21 @@ productsRouter.get("/primaryKey", (req, res) => {
             res.status(500).json("Error getting products data where product id is " + req.query.productID + "!");
         }
         else if (data.length === 0) {
-            res.status(404).json("No products data found for product id" + req.query.productID + "!")
+            res.status(404).json("No products data found for product id " + req.query.productID + "!")
+        }
+        else {
+            res.status(200).json(data);
+        }
+    });
+});
+
+productsRouter.get("/email", (req, res) => {
+    db.query("SELECT * FROM products WHERE email LIKE ?;", [req.query.email], (err, data) => {
+        if (err != null) {
+            res.status(500).json("Error getting products data where email is " + req.query.email + "!");
+        }
+        else if (data.length === 0) {
+            res.status(404).json("No products data found for email " + req.query.email + "!")
         }
         else {
             res.status(200).json(data);
