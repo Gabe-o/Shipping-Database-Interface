@@ -75,11 +75,20 @@ function CargoWeight() {
 
     function weightComparison(e) {
         e.preventDefault();
+        if(shipmentNo === 0 ){
+            alert("please select a shipment to to view the ships")
+        }
+        else{
+       
         let selectedShip = shipsTable.find(ship => ship.shipID === parseInt(inputs.shipID));
         console.log("0: " + selectedShip.maxCargoWeight, + " " + selectedShip.shipID);
 
         let selectedShipment = shipmentTable.find(shipment => shipment.shipmentNo === parseInt(inputs.shipmentNumber));
         console.log("1: " + selectedShipment.weight + " " + selectedShipment.shipmentNo)
+
+        const result = shipmentTable.some(item => item.shipmentNo === parseInt(inputs.shipmentNumber));
+        console.log("result: " + result);
+
 
         let shipCargoWeight = 0;
 
@@ -90,34 +99,44 @@ function CargoWeight() {
             console.log("ShipCargo Weight: " + shipCargoWeight);
             setShipCargo(shipCargoWeight);
 
-            fetch("/api/complex/shipmentToShip", { method: 'POST', body: JSON.stringify({ "shipID": parseInt(inputs.shipID), "shipmentNo" : parseInt(inputs.shipmentNumber)}), headers: new Headers({ 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' }) })
-            .then(res => res.json())
-            .then(data => {
+            fetch("/api/complex/shipmentToShip", { method: 'POST', body: JSON.stringify({ "shipID": parseInt(inputs.shipID), "shipmentNo": parseInt(inputs.shipmentNumber) }), headers: new Headers({ 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' }) })
+                .then(res => res.json())
+                .then(data => {
 
-             })
-            .catch(err => console.log(err))
+                })
+                .catch(err => console.log(err))
 
 
         }
-        else{
+        else {
             alert("error: Shipment will exceed max Cargo Weight");
         }
+    }
 
-     
 
-       
+
+
+
+
+
+
 
 
     }
 
-    function deleteShipmentFromShip(e){
+    function deleteShipmentFromShip(e) {
         e.preventDefault();
-        fetch("/api/complex/shipmentToShipDelete", { method: 'POST', body: JSON.stringify({ "shipmentNo" : parseInt(inputs.shipmentNumber)}), headers: new Headers({ 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' }) })
-        .then(res => res.json())
-        .then(data => {
+        if(shipmentNo === 0 ){
+            alert("please select a shipment to to view the ships")
+        }
+        else{
+        fetch("/api/complex/shipmentToShipDelete", { method: 'POST', body: JSON.stringify({ "shipmentNo": parseInt(inputs.shipmentNumber) }), headers: new Headers({ 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' }) })
+            .then(res => res.json())
+            .then(data => {
 
-         })
-        .catch(err => console.log(err))
+            })
+            .catch(err => console.log(err))
+        }
 
     }
 
@@ -130,7 +149,7 @@ function CargoWeight() {
 
         <div>
             <button onClick={shipmentNumber}>SeeShipmentNo's</button>
-            <button onClick={seeShipsOnRoute}>See Ships</button>
+            {shipmentNo !== 0 ? <button onClick={seeShipsOnRoute}>See Ships</button> : null}
 
 
             <div className='tableDistance'>
